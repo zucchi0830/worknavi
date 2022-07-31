@@ -1,0 +1,202 @@
+@charset "UTF-8";
+
+/* 共通部分 
+-----------------------*/
+html {
+    font-size: 100%;
+}
+
+body {
+    font-family: 'Zen Maru Gothic', sans-serif;
+    color: #000;
+}
+
+h1 {
+    padding: 1% 0;
+    font-size: 32px;
+}
+
+h2 {
+    padding: 1% 0;
+    font-size: 25px;
+}
+
+a {
+    color: #000;
+    text-decoration: none;
+}
+
+ul {
+    list-style-position: inside;
+}
+
+p {
+    font-size: 1.2rem;
+    font-weight: 500;
+    padding: 0.5% 0;
+}
+
+input {
+    border-style: 1px;
+}
+
+.wrapper {
+    width: 80%;
+    margin: 30px auto;
+    border: 1px solid #dfdfdc;
+    border-radius: 5px;
+}
+
+/* フォーム */
+
+li {
+    list-style-type: none;
+}
+
+/* ヘッダー */
+.header {
+    background-color: #FF9900;
+    color: #000;
+    height: 100px;
+}
+
+.header_logo {
+    float: left;
+    font-size: 32px;
+    font-weight: 700;
+    align-items: center;
+    height: 50px;
+    padding: 25px;
+}
+
+.header_list ul {
+    display: webkit-flex;
+    display: flex;
+    -webkit-justify-content: center;
+    justify-content: center;
+    -webkit-align-items: center;
+    align-items: center;
+    height: 100px;
+    /* float: right;
+    padding:30px 20px; */
+}
+
+.header_list li {
+    margin: 20px 0px 20px 40px;
+}
+
+/* index.php */
+/* 検索フォーム */
+.top_form {
+    padding: 10px;
+}
+
+.top_forms {
+    display: webkit-flex;
+    display: flex;
+    -webkit-justify-content: center;
+    justify-content: center;
+    -webkit-align-items: center;
+    align-items: center;
+    height: 100px;
+    padding: 20px;
+}
+
+.form_title {
+    padding: 1px;
+    margin: 2px;
+}
+
+
+.search_button {
+    background-color: #FF9900;
+    color: #000;
+    border: none;
+    padding: 5px 20px;
+    margin: 35px 0 0 0;
+}
+
+/* 最新の求人 */
+.sub_title {
+    text-align: center;
+}
+
+.jobs {
+    border: 1px solid #dee7ec;
+    max-width: 700px;
+    margin: 10px auto;
+}
+
+.jobs h2,
+p {
+    margin: 0;
+}
+
+.detail {
+    max-width: 300px;
+    margin: 30px auto;
+    padding: 20px 0;
+    background-color: #FF9900;
+    color: #000;
+    border: none;
+    text-align: center;
+}
+
+.detail_button {
+    padding: 10px 50px;
+    font-size: 20px;
+}
+
+
+/* フッター */
+.footer {
+    background-color: #FF9900;
+    color: #000;
+    height: 100px;
+    margin-top: 200px;
+}
+
+.footer_logo {
+    float: left;
+    font-size: 32px;
+    font-weight: 700;
+    align-items: center;
+    height: 50px;
+    padding: 25px;
+}
+
+.footer_list ul {
+    display: webkit-flex;
+    display: flex;
+    -webkit-justify-content: center;
+    justify-content: center;
+    -webkit-align-items: center;
+    align-items: center;
+    height: 100px;
+}
+
+.footer_list li {
+    margin: 20px 0px 20px 40px;
+}
+
+/* about.php */
+.about_container {
+    margin: 20px 100px;
+    text-align: left;
+}
+
+.about_sub_title {
+    margin: 40px 0 10px;
+}
+
+/* contact.php */
+.contact_container,
+.login_container {
+    text-align: center;
+    margin: 10px auto;
+}
+
+.signup_container {
+    text-align: left;
+    margin: 10px 100px;
+}
