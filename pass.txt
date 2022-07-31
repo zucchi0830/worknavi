@@ -1,0 +1,4 @@
+データベース名	worknavi
+データベースのユーザー名とパスワード	master_user 
+Panda1bias
+アプリのコードを保存するディレクトリ名	worknavi
