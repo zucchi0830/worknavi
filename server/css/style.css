@@ -139,8 +139,11 @@ li {
     background-color: #FF9900;
     color: #000;
     border: none;
-    padding: 5px 20px;
-    margin: 35px 0 0 0;
+    display: block;
+    margin: 20px auto 0 ;
+    border-radius: 30px;
+    padding: 15px 0;
+    width: 48%;
 }
 
 .checkbox{
@@ -171,6 +174,7 @@ p {
     color: #000;
     border: none;
     text-align: center;
+    border-radius: 30px;
 }
 
 .detail_button {
@@ -251,19 +255,54 @@ p {
     border-radius: 10px;
     width: 85%;
     margin: 50px auto;
-    padding: 50px;
+    padding: 25px;
 }
+
+/* management.php */
+.management_content {
+    background-color: #ff990040;
+    border-radius: 10px;
+    width: 85%;
+    margin: 50px auto;
+    padding: 25px 100px;
+}
+
+.logout_button {
+    text-align: center;
+    padding: 15px 0;
+    width: 50%;
+    background: #FF9900;
+    color: #000;
+    border-radius: 30px;
+    text-decoration: none;
+    margin: 20px auto 0;
+    display: block
+}
+
 /* signup.php */
+.signup_wrapper{
+    width: 500px;
+    margin: 30px auto 0;
+    border-radius: 5px;
+    padding:25px 50px;
+}
+
 .signup_content {
     background-color: #ff990040;
     border-radius: 10px;
     width: 500px;
-    margin: 50px auto;
+    margin: 30px auto;
     padding: 50px;
 }
 .signup_title {
     text-align: center;
 }
+.nom_li{
+list-style-type: auto;
+margin: 20px;
+font-size: 20px;
+}
+
 .email_label,
 .name_label,
 .password_label {
@@ -282,7 +321,16 @@ textarea{
     border-radius: 6px;
     margin-bottom: 10px;
     padding: 10px;
+    appearance: auto;
 }
+
+input[type="radio"] , input[type="checkbox"]{
+   -webkit-transform: scale(1.5);
+   transform: scale(1.5);
+   margin: 0 5px 0 10px;
+   }
+
+input[type="tel"]::placeholder,
 input[type="email"]::placeholder,
 input[type="text"]::placeholder,
 input[type="password"]::placeholder {
@@ -303,6 +351,16 @@ input[type="password"]::placeholder {
     text-indent: 0.5rem;
     border-radius: 30px;
 }
+
+.thanks_back_button{
+    text-align: center;
+    padding: 15px;
+    width: 85%;
+    background: #FF9900;
+    color: #000;
+    border-radius: 30px;
+    text-decoration: none;
+    }
 
 .signup_button {
     text-align: center;

@@ -11,7 +11,7 @@ $dbh = connect_db();
 $name = '';
 $name = '';
 $sel_address_prefectures = ['都道府県を選択してください', '青森県', '秋田県', '岩手県', '山形県', '宮城県', '福島県'];
-$sel_employment = ['雇用形態を選択してください','正社員', '契約社員', 'パート・アルバイト', 'その他'];
+$sel_employment = ['雇用形態を選択してください','正社員', '契約社員', 'パートアルバイト', 'その他'];
 
 ?>
 
@@ -38,32 +38,32 @@ $sel_employment = ['雇用形態を選択してください','正社員', '契�
             <select name="address_prefectures" id="address_prefectures">
                 <?php foreach ($sel_address_prefectures as $value) : ?>
                     <?php if ($value === $address_prefectures) : ?>
-                        // ① POST データが存在する場合はこちらの分岐に入る
+                        <!-- ① POST データが存在する場合はこちらの分岐に入る -->
                         <?= "<option value='$value' selected>" . $value . "</option>"; ?>
                     <?php else : ?>
-                        // ② POST データが存在しない場合はこちらの分岐に入る
+                        <!--  ② POST データが存在しない場合はこちらの分岐に入る -->
                         <?= "<option placeholder='a' value='$value'>" . $value . "</option>"; ?>
                     <?php endif; ?>
                 <?php endforeach; ?>
             </select>
 
             <label class="name_label signup_label" for="name">職種</label>
-            <input type="text" name="name" id="name" placeholder="会社名" value="<?= h($name) ?>">
+            <input type="text" name="name" id="name" placeholder="職種名を入力してください" value="<?= h($name) ?>">
             
             <label class="address_prefectures_label signup_label" for="name">雇用形態</label>
             <select name="address_prefectures" id="address_prefectures">
                 <?php foreach ($sel_employment as $employment_value) : ?>
                     <?php if ($employment_value === $sel_employment) : ?>
-                        // ① POST データが存在する場合はこちらの分岐に入る
+                        <!--  ① POST データが存在する場合はこちらの分岐に入る -->
                         <?= "<option value='$employment_value' selected>" . $employment_value . "</option>"; ?>
                     <?php else : ?>
-                        // ② POST データが存在しない場合はこちらの分岐に入る
+                        <!--  ② POST データが存在しない場合はこちらの分岐に入る -->
                         <?= "<option placeholder='a' value='$employment_value'>" . $employment_value . "</option>"; ?>
                     <?php endif; ?>
                 <?php endforeach; ?>
             </select>
 
-                <input type="submit" value="検索する" class="signup_button">
+                <input type="submit" value="検索する" class="search_button">
             </div>
         </form>
     </section>

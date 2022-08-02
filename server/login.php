@@ -7,7 +7,7 @@ session_start();
 
 // ログイン判定
 if (isset($_SESSION['current_user'])) {
-    header('Location: show.php');
+    header('Location: management.php');
     exit;
 }
 
@@ -26,7 +26,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         if (!empty($user) && password_verify($password, $user['password'])) {
             $_SESSION['current_user']['id'] = $user['id'];
             $_SESSION['current_user']['name'] = $user['name'];
-            header('Location: show.php');
+            header('Location: management.php');
             exit;
         } else {
             $errors[] = MSG_EMAIL_PASSWORD_NOT_MATCH;

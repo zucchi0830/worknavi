@@ -17,11 +17,10 @@
             <div class="right_content">
                 <div class="login_info">
                     <?php if (!empty($current_user)) : ?>
-                        <li><a class="header_logout_button" href="show.php" class="nav-link">管理画面へ</a></li>
+                        <li><a class="header_logout_button" href="management.php" class="nav-link">管理画面へ</a></li>
                     <?php else : ?>
                         <li><a class="header_login_button" href="login.php" class="nav-link">ログイン</a></li>
                     <?php endif; ?>
-                        <!-- <li><a href="login.php">ログイン</a></li> -->
                         <li><a href="contact.php">お問い合わせ</a></li>
                 </div>
             </div>

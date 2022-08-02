@@ -17,9 +17,6 @@ $address_prefectures_key = '';
 $errors = [];
 
 $sel_address_prefectures = ['都道府県を選択してください', '青森県', '秋田県', '岩手県', '山形県', '宮城県', '福島県'];
-// $job_employment = ['正社員', '契約社員', 'パート・アルバイト', 'その他'];
-// $job_academic = ['大学卒', '高校卒', '中学卒', '不問'];
-// $job_holiday = ['日','月','火','水','木','金','土','祝','その他']
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $name = filter_input(INPUT_POST, 'name');
@@ -47,8 +44,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 <body>
     <?php include_once __DIR__ . '/_header.php' ?>
+    <section class="signup_wrapper">
+        <h1 class="signup_title">求人掲載までの流れ</h1>
+        <ol>
+        <li class="nom_li">会社情報を登録する</li>
+        <li class="nom_li">ログインし、管理画面へ</li>
+        <li class="nom_li">管理画面より、求人掲載ページへ進む</li>
+        </ol>
+    </section>
     <section class="signup_content wrapper">
-        <h1 class="signup_title">新規ユーザー登録</h1>
+        <h1 class="signup_title">会社情報を登録する</h1>
         <?php if ($errors) : ?>
             <ul class="errors">
                 <?php foreach ($errors as $error) : ?>
@@ -66,10 +71,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <select name="address_prefectures" id="address_prefectures">
                 <?php foreach ($sel_address_prefectures as $value) : ?>
                     <?php if ($value === $address_prefectures) : ?>
-                        // ① POST データが存在する場合はこちらの分岐に入る
+                        <!-- ① POST データが存在する場合はこちらの分岐に入る -->
                         <?= "<option value='$value' selected>" . $value . "</option>"; ?>
                     <?php else : ?>
-                        // ② POST データが存在しない場合はこちらの分岐に入る
+                        <!-- ② POST データが存在しない場合はこちらの分岐に入る -->
                         <?= "<option placeholder='a' value='$value'>" . $value . "</option>"; ?>
                     <?php endif; ?>
                 <?php endforeach; ?>
@@ -88,7 +93,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <input type="password" name="password" id="password" placeholder="Password">
             <div class="button_area">
 
-                <input type="submit" value="新規登録" class="signup_button">
+                <input type="submit" value="会社情報を登録する" class="signup_button">
                 <a href="login.php" class="login_page_button">ログインはこちら</a>
             </div>
         </form>

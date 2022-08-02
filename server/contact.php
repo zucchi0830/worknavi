@@ -83,10 +83,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <select name="address_prefectures" id="address_prefectures">
                 <?php foreach ($sel_address_prefectures as $value) : ?>
                     <?php if ($value === $address_prefectures) : ?>
-                        // ① POST データが存在する場合はこちらの分岐に入る
+                        <!-- ① POST データが存在する場合はこちらの分岐に入る -->
                         <?= "<option value='$value' selected>" . $value . "</option>"; ?>
                     <?php else : ?>
-                        // ② POST データが存在しない場合はこちらの分岐に入る
+                        <!-- ② POST データが存在しない場合はこちらの分岐に入る -->
                         <?= "<option placeholder='a' value='$value'>" . $value . "</option>"; ?>
                     <?php endif; ?>
                 <?php endforeach; ?>

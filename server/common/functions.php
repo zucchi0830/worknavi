@@ -207,3 +207,30 @@ function insert_contact($name, $full_name, $address_prefectures, $address_detail
 
     $stmt->execute();
 }
+
+//求人登録
+function insert_job($name, $full_name, $address_prefectures, $address_detail, $homepage, 
+    $tel, $email, $description)
+{
+    $dbh = connect_db();
+
+    $sql = <<<EOM
+    INSERT INTO
+        contacts
+        (name, full_name, address_prefectures, address_detail, homepage, tel, email, description)
+    VALUES
+        (:name, :full_name, :address_prefectures, :address_detail, :homepage, :tel, :email, :description)
+    EOM;
+
+    $stmt = $dbh->prepare($sql);
+    $stmt->bindValue(':name', $name, PDO::PARAM_STR);
+    $stmt->bindValue(':full_name', $full_name, PDO::PARAM_STR);
+    $stmt->bindValue(':address_prefectures', $address_prefectures, PDO::PARAM_STR);
+    $stmt->bindValue(':address_detail', $address_detail, PDO::PARAM_STR);
+    $stmt->bindValue(':homepage', $homepage, PDO::PARAM_STR);
+    $stmt->bindValue(':tel', $tel, PDO::PARAM_STR);
+    $stmt->bindValue(':email', $email, PDO::PARAM_STR);
+    $stmt->bindValue(':description', $description, PDO::PARAM_STR);
+
+    $stmt->execute();
+}

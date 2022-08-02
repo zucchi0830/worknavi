@@ -1,13 +1,15 @@
 <!DOCTYPE html>
 <html lang="ja">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Thanks</title>
-</head>
+<?php include_once __DIR__ . '/_head.php' ?>
+
 <body>
-    お問い合わせいただきありがとうございます。
-    <a href="index.php">topへ</a>
+<?php include_once __DIR__ . '/_header.php' ?>
+    <section class="search_content wrapper">
+    <h1>お問い合わせいただきありがとうございます。</h1><br>
+    <a href="index.php" class="thanks_back_button">トップへ戻る</a>
+    </section>
+
+<!-- フッター読み込み -->
+<?php include_once __DIR__ . '/_footer.php' ?>
 </body>
 </html>
