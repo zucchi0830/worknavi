@@ -56,7 +56,7 @@ $address_prefectures = [
         </div>
     </div>
     <div class="detail">
-        <input type="submit" value="上記の内容で問い合わせる">
+        <input class="submit_button" type="submit" value="上記の内容で問い合わせる">
     </div>
 
 

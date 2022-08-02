@@ -50,7 +50,7 @@ $job_employment = ['雇用形態を選んでください', '正社員', '契約�
         <div class="jobs job1">
             <div class="jobs_title jobs_left">
                 <h2>企業名:◯◯</h2>
-                <img src="/images/sample.png" alt="aaa">
+                <img src="sample.png" alt="aaa">
             </div>
             <div class="jobs_title jobs_right">
                 <p>勤務地:岩手県西磐井郡</p>
@@ -67,7 +67,7 @@ $job_employment = ['雇用形態を選んでください', '正社員', '契約�
         <div class="jobs job1">
             <div class="jobs_title jobs_left">
                 <h2>企業名:◯◯</h2>
-                <img src="/images/sample.png" alt="aaa">
+                <img src="sample.png" alt="aaa">
             </div>
             <div class="jobs_title jobs_right">
                 <p>勤務地:{$}</p>
@@ -84,7 +84,7 @@ $job_employment = ['雇用形態を選んでください', '正社員', '契約�
         <div class="jobs job1">
             <div class="jobs_title jobs_left">
                 <h2>企業名:◯◯</h2>
-                <img src="/images/sample.png" alt="aaa">
+                <img src="sample.png" alt="aaa">
             </div>
             <div class="jobs_title jobs_right">
                 <p>勤務地:{$}</p>

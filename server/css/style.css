@@ -36,9 +36,15 @@ p {
     padding: 0.5% 0;
 }
 
-input {
-    border-style: 1px;
-}
+/* input, select, textarea{
+    border: 1px solid #000000;
+    appearance: auto;
+    background-color: #FFF;
+    border-radius: 6px;
+} */
+
+.submit_button{
+border: none;}
 
 .wrapper {
     width: 80%;
@@ -46,8 +52,6 @@ input {
     border: 1px solid #dfdfdc;
     border-radius: 5px;
 }
-
-/* フォーム */
 
 li {
     list-style-type: none;
@@ -114,6 +118,10 @@ li {
     border: none;
     padding: 5px 20px;
     margin: 35px 0 0 0;
+}
+
+.checkbox{
+margin: 0 2px 0 10px;
 }
 
 /* 最新の求人 */
@@ -199,4 +207,171 @@ p {
 .signup_container {
     text-align: left;
     margin: 10px 100px;
+}
+
+/* スパルタキャンプ作 */
+.signup_label{
+    display: block;
+    margin: 10px 0px;
+}
+
+.errors li {
+    margin-top: 5px;
+    color: #ec008c;
+    text-align: center;
+    list-style: none;
+}
+
+/* signup.php */
+.signup_content {
+    background-color: #ff990040;
+    border-radius: 10px;
+    width: 500px;
+    margin: 50px auto;
+    padding: 50px;
+}
+.signup_title {
+    text-align: center;
+}
+.email_label,
+.name_label,
+.password_label {
+    display: block;
+    margin: 10px 0px;
+}
+input[type="email"],
+input[type="text"],
+input[type="password"] ,
+select{
+    display: block;
+    width: 100%;
+    background-color: #FFFFFF;
+    border-radius: 6px;
+    margin-bottom: 10px;
+    padding: 10px;
+}
+input[type="email"]::placeholder,
+input[type="text"]::placeholder,
+input[type="password"]::placeholder {
+    color: #999999;
+}
+.button_area {
+    margin-top: 30px;
+    display: flex;
+    justify-content: space-between;
+}
+.login_button,
+.signup_button {
+    background: #FF9900;
+    padding: 15px 0;
+    width: 48%;
+    color: #FFFFFF;
+    letter-spacing: 0.5rem;
+    text-indent: 0.5rem;
+    border-radius: 30px;
+}
+
+.signup_button {
+    text-align: center;
+    padding: 15px 0;
+    width: 56%;
+    background: #FF9900;
+    color: #000;
+    border-radius: 30px;
+    text-decoration: none;
+}
+
+/* login.php */
+.login_content {
+    background-color: #ff990040;
+    border-radius: 10px;
+    width: 500px;
+    height: 400px;
+    margin: 50px auto;
+    padding: 50px;
+}
+.login_title {
+    text-align: center;
+}
+.login_button {
+    border-radius: 30px;
+    background: #FF9900;
+    padding: 15px 0;
+    width: 56%;
+    color: #000;
+    letter-spacing: 0.5rem;
+    text-indent: 0.5rem
+}
+.signup_page_button,
+.login_page_button {
+    border-radius: 30px;
+    text-align: center;
+    padding: 15px 0;
+    width: 40%;
+    background: #fff;
+    color: #000;
+    text-decoration: none;
+}
+
+
+ /* レスポンシブ */
+@media (max-width: 900px) {
+    /* upload.php */
+    .upload_content_label {
+        height: 355px;
+    }
+    .upload_content_form {
+        width: 70%;
+    }
+    /* show.php */
+    .content {
+        width: 70%;
+    }
+}
+@media (max-width: 600px) {
+    /* upload.php */
+    .upload_content_form {
+        width: 90%;
+    }
+    /* index.php*/
+    .article {
+        padding-bottom: 10%;
+    }
+    /* show.php */
+    .content {
+        width: 90%;
+    }
+    /* signup.php */
+    .signup_content {
+        width: 70%;
+    }
+    .button_area {
+        margin-top: 15px;
+        flex-direction: column;
+    }
+    .signup_button {
+        width: 100%;
+        padding: 10px;
+    }
+    .login_page_button {
+        width: 100%;
+        text-align: center;
+        margin-top: 5px;
+        padding: 10px;
+    }
+     /* login.php */
+    .login_content {
+        width: 70%;
+    }
+    .login_button {
+        width: 100%;
+        padding: 10px;
+    }
+    .signup_page_button {
+        text-align: center;
+        width: 100%;
+        margin-top: 5px;
+        padding: 10px;
+    }
+    
 }

@@ -1,15 +1,100 @@
 <?php
-$job_address_prefectures = ['都道府県を選んでください', '青森県', '秋田県', '岩手県', '山形県', '宮城県'];
-$job_employment = ['雇用形態を選んでください', '正社員', '契約社員', 'パート・アルバイト', 'その他'];
+// 関数ファイルを読み込む
+require_once __DIR__ . '/common/functions.php';
+
+// 変数の初期化
+$name = '';
+$address_prefectures = '';
+$address_detail = '';
+$homepage = '';
+$email = '';
+$password = '';
+$address_prefectures_key = '';
+
+$errors = [];
+
+$sel_address_prefectures = ['都道府県を選択してください', '青森県', '秋田県', '岩手県', '山形県', '宮城県', '福島県'];
+// $job_employment = ['正社員', '契約社員', 'パート・アルバイト', 'その他'];
+// $job_academic = ['大学卒', '高校卒', '中学卒', '不問'];
+// $job_holiday = ['日','月','火','水','木','金','土','祝','その他']
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $name = filter_input(INPUT_POST, 'name');
+    $address_prefectures = filter_input(INPUT_POST, 'address_prefectures');
+
+    $address_detail = filter_input(INPUT_POST, 'address_detail');
+    $homepage = filter_input(INPUT_POST, 'homepage');
+    $email = filter_input(INPUT_POST, 'email');
+    $password = filter_input(INPUT_POST, 'password');
+    $errors = signup_validate($name, $address_prefectures, $address_detail, $homepage, $email, $password);
+
+    // エラーがなければ登録→画面偏移
+    if (empty($errors)) {
+        insert_user($name, $address_prefectures, $address_detail, $homepage, $email, $password);
+        header('Location: login.php');
+        exit;
+    }
+}
+var_dump($address_prefectures);
+var_dump($address_prefectures_key);
+
 ?>
 
 <!DOCTYPE html>
 <html lang="ja">
 <!-- ヘッダー読み込み -->
 <?php include_once __DIR__ . '/_head.php' ?>
-<?php include_once __DIR__ . '/_header.php' ?>
 
 <body>
+    <?php include_once __DIR__ . '/_header.php' ?>
+    <!-- スパルタキャンプ作 -->
+    <section class="signup_content wrapper">
+        <h1 class="signup_title">新規ユーザー登録</h1>
+        <?php if ($errors) : ?>
+            <ul class="errors">
+                <?php foreach ($errors as $error) : ?>
+                    <li>
+                        <?= h($error) ?>
+                    </li>
+                <?php endforeach; ?>
+            </ul>
+        <?php endif; ?>
+        <form class="signup_form" action="" method="post">
+            <label class="name_label signup_label" for="name">会社名</label>
+            <input type="text" name="name" id="name" placeholder="会社名" value="<?= h($name) ?>">
+
+            <label class="address_prefectures_label signup_label" for="name">本社 都道府県</label>
+            <select name="address_prefectures" id="address_prefectures">
+                <?php foreach ($sel_address_prefectures as $value) : ?>
+                    <?php if ($value === $address_prefectures) : ?>
+                        // ① POST データが存在する場合はこちらの分岐に入る
+                        <?= "<option value='$value' selected>" . $value . "</option>"; ?>
+                    <?php else : ?>
+                        // ② POST データが存在しない場合はこちらの分岐に入る
+                        <?= "<option placeholder='a' value='$value'>" . $value . "</option>"; ?>
+                    <?php endif; ?>
+                <?php endforeach; ?>
+            </select>
+
+            <label class="address_detail_label signup_label" for="name">本社 市区町村番地 建物名</label>
+            <input type="text" name="address_detail" id="address_detail" placeholder="建物名まで" value="<?= h($address_detail) ?>">
+
+            <label class="url_label  signup_label" for="name">HP URL</label>
+            <input type="text" name="homepage" id="homepage" placeholder="HP URL" value="<?= h($homepage) ?>">
+
+            <label class="email_label  signup_label" for="email">メールアドレス</label>
+            <input type="email" name="email" id="email" placeholder="Email" value="<?= h($email) ?>">
+
+            <label class="password_label  signup_label" for="password">パスワード</label>
+            <input type="password" name="password" id="password" placeholder="Password">
+            <div class="button_area">
+
+                <input type="submit" value="新規登録" class="signup_button">
+                <a href="login.php" class="login_page_button">ログインはこちら</a>
+            </div>
+        </form>
+    </section>
+    <!-- 葛川作 -->
     <div class="signup_container">
         <h1 class="signup_sub_title">無料で求人掲載</h1>
         <div class="job_form">
@@ -18,8 +103,8 @@ $job_employment = ['雇用形態を選んでください', '正社員', '契約�
         </div>
         本社 都道府県
         <select name="item" id="type">
-            <?php foreach ($job_address_prefectures as $prefectures_key) :
-                echo '<option value="' . $job_prefectures_key . '">' . $prefectures_key . '</option>';
+            <?php foreach ($job_address_prefectures as $address_prefectures_key) :
+                echo '<option value="' . $address_prefectures_key . '">' . $address_prefectures_key . '</option>';
             endforeach; ?>
         </select>
         <div class="job_form">
@@ -27,153 +112,23 @@ $job_employment = ['雇用形態を選んでください', '正社員', '契約�
             <input type="text" name="company" placeholder="市区町村番地 建物名をご入力ください">
         </div>
         <div class="job_form">
-            職種
-            <input type="text" name="tel" placeholder="職種名をご入力ください">
+            HP URL
+            <input type="text" name="company" placeholder="ホームページURLをご入力ください">
         </div>
         <div class="job_form">
-            勤務地 都道府県
-            <select name="item" id="type">
-                <?php foreach ($job_address_prefectures as $prefectures_key) :
-                    echo '<option value="' . $job_prefectures_key . '">' . $prefectures_key . '</option>';
-                endforeach; ?>
-            </select>
-        </div>
-        <div class="job_form">
-            勤務地 市区町村番地
-            <input type="text" name="tel" placeholder="市区町村番地 建物名をご入力ください">
-        </div>
-        <div class="job_form">
-            雇用形態
-            <input type="text" name="email" placeholder="ラジオボタン">
-        </div>
-        <div class="job_form">
-            最寄り駅
-            <input type="text" name="email" placeholder="最寄り駅をご入力ください">
-        </div>
-        <div class="job_form">
-            受動喫煙対策
-            <input type="text" name="email" placeholder="ラジオボタン">
-        </div>
-        <div class="job_form">
-            マイカー通勤
-            <input type="text" name="email" placeholder="ラジオボタン">
-        </div>
-        <div class="job_form">
-            転勤の可能性
-            <input type="text" name="email" placeholder="ラジオボタン">
-        </div>
-        <div class="job_form">
-            学歴
-            <input type="text" name="email" placeholder="ラジオボタン">
-        </div>
-        <div class="job_form">
-            必要な経験
-            <input type="text" name="email" placeholder="必要な経験をご入力ください">
-        </div>
-        <div class="job_form">
-            必要な資格・免許
-            <input type="text" name="email" placeholder="必要な資格・免許をご入力ください">
-        </div>
-        <div class="job_form">
-            給与
-            <input type="text" name="email" placeholder="給与をご入力ください">
-        </div>
-        <div class="job_form">
-            通勤手当 実費支給
-            <input type="text" name="email" placeholder="ラジオボタン">
-        </div>
-        <div class="job_form">
-            上限有無
-            <input type="text" name="email" placeholder="ラジオボタン">
-        </div>
-        <div class="job_form">
-            上限
-            <input type="text" name="email" placeholder="上限額をご入力ください">
-        </div>
-        <div class="job_form">
-            加入保険
-            <input type="text" name="email" placeholder="チェックボックス">
-        </div>
-        <div class="job_form">
-            育児休業の取得実績
-            <input type="text" name="email" placeholder="ラジオボタン">
-        </div>
-        <div class="job_form">
-            勤務時間
-            <textarea type="text" name="contact_text" placeholder="勤務時間をご入力ください"></textarea>
-        </div>
-        <div class="job_form">
-            休憩時間
-            <textarea type="text" name="contact_text" placeholder="休憩時間をご入力ください"></textarea>
-        </div>
-        <div class="job_form">
-            休日
-            <input type="text" name="email" placeholder="チェックボックス">
-        </div>
-        <div class="job_form">
-            休日備考
-            <textarea type="text" name="contact_text" placeholder="休日備考をご入力ください"></textarea>
-        </div>
-        <div class="job_form">
-            定年
-            <input type="text" name="email" placeholder="ラジオボタン">
-        </div>
-        <div class="job_form">
-            定年年齢
-            <input type="text" name="email" placeholder="定年年齢をご入力ください">
-        </div>
-        <div class="job_form">
-            再雇用制度
-            <input type="text" name="email" placeholder="ラジオボタン">
-        </div>
-        <div class="job_form">
-            試用期間有無
-            <input type="text" name="email" placeholder="ラジオボタン">
-        </div>
-        <div class="job_form">
-            試用期間中の労働条件相違
-            <input type="text" name="email" placeholder="ラジオボタン">
-        </div>
-        <div class="job_form">
-            お問い合わせ内容
-            <textarea type="text" name="contact_text" placeholder="試用期間中の条件をご入力ください"></textarea>
-        </div>
-        <div class="job_form">
-            応募先連絡先 電話番号
-            <input type="text" name="email" placeholder="応募時の電話番号をご入力ください">
-        </div>
-        <div class="job_form">
-            応募連絡先 メールアドレス
-            <input type="text" name="email" placeholder="メールアドレスをご入力ください">
-        </div>
-        <div class="job_form">
-            応募連絡先 その他
-            <input type="text" name="email" placeholder="電話・メール以外の連絡先をご入力ください">
-        </div>
-        <div class="job_form">
-            応募連絡先 採用担当者名
-            <input type="text" name="email" placeholder="ご担当者名をご入力ください">
-        </div>
-        <div class="job_form">
-            採用担当者名(ふりがな)
-            <input type="text" name="email" placeholder="ふりがなをご入力ください">
-        </div>
-        <div class="job_form">
-            ログインID
-            <input type="text" name="email" placeholder="ログインID">
+            メールアドレス(ログインID)
+            <input type="text" name="company" placeholder="メールアドレスをご入力ください">
         </div>
         <div class="job_form">
             パスワード
-            <input type="text" name="email" placeholder="パスワードをご入力ください">
+            <input type="text" name="company" placeholder="パスワードをご入力ください">
         </div>
-    </div>
-    <div class="detail">
-        <input type="submit" value="上記の内容で求人掲載する">
-    </div>
+        <div class="detail">
+            <input class="submit_button" type="submit" value="上記の内容で求人掲載する">
+        </div>
 
-
-    <!-- フッター読み込み -->
-    <?php include_once __DIR__ . '/_footer.php' ?>
+        <!-- フッター読み込み -->
+        <?php include_once __DIR__ . '/_footer.php' ?>
 </body>
 
 </html>
