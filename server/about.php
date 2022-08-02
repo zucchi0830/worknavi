@@ -1,9 +1,14 @@
+<?php 
+// セッション開始
+session_start();
+?>
+
 <!DOCTYPE html>
 <html lang="ja">
 <!-- ヘッダー読み込み -->
 <?php include_once __DIR__ . '/_head.php' ?>
-<?php include_once __DIR__ . '/_header.php' ?>
 <body>
+<?php include_once __DIR__ . '/_header.php' ?>
     <div class="about_container">
         <h1 class="about_sub_title">東北ワークナビについて</h1>
         <p>東北に特化した求人サイト「東北ワークナビ」。</p>

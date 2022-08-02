@@ -1,48 +1,72 @@
 <?php
 // 関数ファイルを読み込む
 require_once __DIR__ . '/common/functions.php';
+    // セッション開始
+    session_start();
 
 // データベースに接続
 $dbh = connect_db();
 
-$job_address_prefectures = ['都道府県を選んでください', '青森県', '秋田県', '岩手県', '山形県', '宮城県', '福島県'];
-$job_employment = ['雇用形態を選んでください', '正社員', '契約社員', 'パート・アルバイト', 'その他'];
+// 変数の初期化
+$name = '';
+$name = '';
+$sel_address_prefectures = ['都道府県を選択してください', '青森県', '秋田県', '岩手県', '山形県', '宮城県', '福島県'];
+$sel_employment = ['雇用形態を選択してください','正社員', '契約社員', 'パート・アルバイト', 'その他'];
+
 ?>
 
 <!DOCTYPE html>
 <html lang="ja">
 <!-- <head>の読み込み -->
 <?php include_once __DIR__ . '/_head.php' ?>
-<?php include_once __DIR__ . '/_header.php' ?>
 
 <body>
-    <form action="" method="post">
-        <div class="top_forms">
-            <div class="top_form">
-                <p class="form_title">雇用形態</p>
-                <select name="item" id="type">
-                    <?php foreach ($job_employment as $employment_key) :
-                        echo '<option value="' . $employment_key . '">' . $employment_key . '</option>';
-                    endforeach; ?>
-                </select>
+<?php include_once __DIR__ . '/_header.php' ?>
+    <section class="search_content wrapper">
+        <h1 class="signup_title">求人検索はこちら</h1>
+        <!-- <?php if ($errors) : ?>
+            <ul class="errors">
+                <?php foreach ($errors as $error) : ?>
+                    <li>
+                        <?= h($error) ?>
+                    </li>
+                <?php endforeach; ?>
+            </ul>
+        <?php endif; ?> -->
+        <form class="signup_form" action="" method="post">
+            <label class="address_prefectures_label signup_label" for="name">都道府県</label>
+            <select name="address_prefectures" id="address_prefectures">
+                <?php foreach ($sel_address_prefectures as $value) : ?>
+                    <?php if ($value === $address_prefectures) : ?>
+                        // ① POST データが存在する場合はこちらの分岐に入る
+                        <?= "<option value='$value' selected>" . $value . "</option>"; ?>
+                    <?php else : ?>
+                        // ② POST データが存在しない場合はこちらの分岐に入る
+                        <?= "<option placeholder='a' value='$value'>" . $value . "</option>"; ?>
+                    <?php endif; ?>
+                <?php endforeach; ?>
+            </select>
+
+            <label class="name_label signup_label" for="name">職種</label>
+            <input type="text" name="name" id="name" placeholder="会社名" value="<?= h($name) ?>">
+            
+            <label class="address_prefectures_label signup_label" for="name">雇用形態</label>
+            <select name="address_prefectures" id="address_prefectures">
+                <?php foreach ($sel_employment as $employment_value) : ?>
+                    <?php if ($employment_value === $sel_employment) : ?>
+                        // ① POST データが存在する場合はこちらの分岐に入る
+                        <?= "<option value='$employment_value' selected>" . $employment_value . "</option>"; ?>
+                    <?php else : ?>
+                        // ② POST データが存在しない場合はこちらの分岐に入る
+                        <?= "<option placeholder='a' value='$employment_value'>" . $employment_value . "</option>"; ?>
+                    <?php endif; ?>
+                <?php endforeach; ?>
+            </select>
+
+                <input type="submit" value="検索する" class="signup_button">
             </div>
-            <div class="top_form">
-                <p class="form_title">職種</p>
-                <input type="search" name="keyword" placeholder="職種名をご入力ください">
-            </div>
-            <div class="top_form">
-                <p class="form_title">都道府県</p>
-                <select name="item" id="type">
-                    <?php foreach ($job_address_prefectures as $prefectures_key) :
-                        echo '<option value="' . $prefectures_key . '">' . $prefectures_key . '</option>';
-                    endforeach; ?>
-                </select>
-            </div>
-            <div class="top_form">
-                <input class="search_button button" type="submit" value="検索">
-            </div>
-        </div>
-    </form>
+        </form>
+    </section>
 
     <div class="sub_title">
         <h1>最新の求人</h1>

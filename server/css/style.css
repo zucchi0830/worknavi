@@ -89,6 +89,29 @@ li {
     margin: 20px 0px 20px 40px;
 }
 
+/* ログイン判定 */
+.right_content {
+    display: flex;
+}
+.login_info {
+    margin-right: 20px;
+    align-items: center;
+    display: flex;
+}
+.login_info p {
+    margin-right: 10px;
+    font-size: 20px;
+    color: #ffffff;
+}
+.header_logout_button {
+    align-items: center;
+    text-decoration: none;
+}
+.header_login_button {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+}
 /* index.php */
 /* 検索フォーム */
 .top_form {
@@ -222,6 +245,14 @@ p {
     list-style: none;
 }
 
+/* index.php >>> search */
+.search_content {
+    background-color: #ff990040;
+    border-radius: 10px;
+    width: 85%;
+    margin: 50px auto;
+    padding: 50px;
+}
 /* signup.php */
 .signup_content {
     background-color: #ff990040;
@@ -241,8 +272,10 @@ p {
 }
 input[type="email"],
 input[type="text"],
+input[type="tel"] ,
 input[type="password"] ,
-select{
+select,
+textarea{
     display: block;
     width: 100%;
     background-color: #FFFFFF;
@@ -286,7 +319,6 @@ input[type="password"]::placeholder {
     background-color: #ff990040;
     border-radius: 10px;
     width: 500px;
-    height: 400px;
     margin: 50px auto;
     padding: 50px;
 }
@@ -313,6 +345,17 @@ input[type="password"]::placeholder {
     text-decoration: none;
 }
 
+/* contact.php */
+.contact_button{
+    text-align: center;
+    padding: 15px 0;
+    width: 85%;
+    background: #FF9900;
+    color: #000;
+    border-radius: 30px;
+    text-decoration: none;
+    margin: 0 auto;
+}
 
  /* レスポンシブ */
 @media (max-width: 900px) {

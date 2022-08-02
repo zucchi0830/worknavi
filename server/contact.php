@@ -1,6 +1,25 @@
 <?php
-$address_prefectures = [
-    '', '北海道', '青森県', '岩手県', '宮城県', '秋田県', '山形県',
+// 関数ファイルを読み込む
+require_once __DIR__ . '/common/functions.php';
+
+// セッション開始
+session_start();
+
+// 変数の初期化
+$name = '';
+$full_name = '';
+$address_prefectures = '';
+$address_detail = '';
+$homepage = '';
+$tel = '';
+$email = '';
+$description = '';
+$address_prefectures_key = '';
+
+$errors = [];
+
+$sel_address_prefectures = [
+    '都道府県を選択してください', '北海道', '青森県', '岩手県', '宮城県', '秋田県', '山形県',
     '福島県', '茨城県', '栃木県', '群馬県',
     '埼玉県', '千葉県', '東京都', '神奈川県',
     '新潟県', '富山県', '石川県', '福井県',
@@ -12,56 +31,89 @@ $address_prefectures = [
     '福岡県', '佐賀県', '長崎県', '熊本県', '大分県', '宮崎県', '鹿児島県', '沖縄県'
 ];
 
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $name = filter_input(INPUT_POST, 'name');
+    $full_name = filter_input(INPUT_POST, 'full_name');
+    $address_prefectures = filter_input(INPUT_POST, 'address_prefectures');
+    $address_detail = filter_input(INPUT_POST, 'address_detail');
+    $homepage = filter_input(INPUT_POST, 'homepage');
+    $tel = filter_input(INPUT_POST, 'tel');
+    $email = filter_input(INPUT_POST, 'email');
+    $description = filter_input(INPUT_POST, 'description');
+    
+    $errors = contact_validate($name, $full_name, $address_prefectures, $address_detail, $homepage, 
+    $tel, $email, $description);
+
+    // エラーがなければ登録→画面偏移
+    if (empty($errors)) {
+        insert_contact($name, $full_name, $address_prefectures, $address_detail, $homepage, 
+    $tel, $email, $description);
+        header('Location: thanks.php');
+        exit;
+    }
+}
 ?>
+
 <!DOCTYPE html>
 <html lang="ja">
 <!-- ヘッダー読み込み -->
 <?php include_once __DIR__ . '/_head.php' ?>
-<?php include_once __DIR__ . '/_header.php' ?>
 
 <body>
-    <div class="contact_container">
-        <h1 class="contact_sub_title">お問い合わせ</h1>
-        <div class="top_form">
-            <p>会社名</p>
-            <input type="text" name="company" placeholder="職種名をご入力ください">
-        </div>
-        <div class="top_form">
-            <p>氏名</p>
-            <input type="text" name="name" placeholder="職種名をご入力ください">
-        </div>
-        <div class="top_form">
-            <p>都道府県</p>
-            <select name="item" id="type">
-                <?php foreach ($address_prefectures as $prefectures_key) :
-                    echo '<option value="' . $prefectures_key . '">' . $prefectures_key . '</option>';
-                endforeach; ?>
+    <?php include_once __DIR__ . '/_header.php' ?>
+    <section class="signup_content wrapper">
+        <h1 class="signup_title">お問い合わせ</h1>
+        <?php if ($errors) : ?>
+            <ul class="errors">
+                <?php foreach ($errors as $error) : ?>
+                    <li>
+                        <?= h($error) ?>
+                    </li>
+                <?php endforeach; ?>
+            </ul>
+        <?php endif; ?>
+        <form class="signup_form" action="" method="post">
+            <label class="name_label signup_label" for="name">会社名</label>
+            <input type="text" name="name" id="name" placeholder="会社名" value="<?= h($name) ?>">
+
+            <label class="name_label signup_label" for="name">氏名</label>
+            <input type="text" name="full_name" id="name" placeholder="氏名" value="<?= h($full_name) ?>">
+
+            <label class="address_prefectures_label signup_label" for="name">都道府県</label>
+            <select name="address_prefectures" id="address_prefectures">
+                <?php foreach ($sel_address_prefectures as $value) : ?>
+                    <?php if ($value === $address_prefectures) : ?>
+                        // ① POST データが存在する場合はこちらの分岐に入る
+                        <?= "<option value='$value' selected>" . $value . "</option>"; ?>
+                    <?php else : ?>
+                        // ② POST データが存在しない場合はこちらの分岐に入る
+                        <?= "<option placeholder='a' value='$value'>" . $value . "</option>"; ?>
+                    <?php endif; ?>
+                <?php endforeach; ?>
             </select>
-        </div>
-        <div class="top_form">
-            <p>市区町村</p>
-            <input type="text" name="name" placeholder="職種名をご入力ください">
-        </div>
-        <div class="top_form">
-            <p>電話番号</p>
-            <input type="text" name="tel" placeholder="職種名をご入力ください">
-        </div>
-        <div class="top_form">
-            <p>メールアドレス</p>
-            <input type="text" name="email" placeholder="職種名をご入力ください">
-        </div>
-        <div class="top_form">
-            <p>お問い合わせ内容</p>
-            <textarea type="text" name="contact_text" placeholder="職種名をご入力ください"></textarea>
-        </div>
-    </div>
-    <div class="detail">
-        <input class="submit_button" type="submit" value="上記の内容で問い合わせる">
-    </div>
 
+            <label class="address_detail_label signup_label" for="name">市区町村番地 建物名</label>
+            <input type="text" name="address_detail" id="address_detail" placeholder="建物名まで" value="<?= h($address_detail) ?>">
 
-    <!-- フッター読み込み -->
-    <?php include_once __DIR__ . '/_footer.php' ?>
+            <label class="url_label signup_label" for="name">HP URL</label>
+            <input type="text" name="homepage" id="homepage" placeholder="HP URL" value="<?= h($homepage) ?>">
+
+            <label class="tel_label signup_label" for="tel">電話番号</label>
+            <input type="tel" name="tel" id="tel" placeholder="tel" maxlength="13" value="<?= h($tel) ?>">
+
+            <label class="email_label signup_label" for="email">メールアドレス</label>
+            <input type="email" name="email" id="email" placeholder="Email" value="<?= h($email) ?>">
+
+            <label class="description_label signup_label" for="description">お問い合わせ内容</label>
+            <textarea class="description" name="description" rows="5" maxlength="1000" placeholder="お問い合わせ内容を入力してください"><?= h($description) ?></textarea>
+            
+            <div class="button_area">
+                <input type="submit" value="上記内容で問い合わせる" class="contact_button">
+            </div>
+        </form>
+    </section>
+        <!-- フッター読み込み -->
+        <?php include_once __DIR__ . '/_footer.php' ?>
 </body>
 
 </html>

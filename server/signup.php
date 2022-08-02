@@ -2,6 +2,9 @@
 // 関数ファイルを読み込む
 require_once __DIR__ . '/common/functions.php';
 
+// セッション開始
+session_start();
+
 // 変数の初期化
 $name = '';
 $address_prefectures = '';
@@ -30,14 +33,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     // エラーがなければ登録→画面偏移
     if (empty($errors)) {
-        insert_user($name, $address_prefectures, $address_detail, $homepage, $email, $password);
+        insert_company($name, $address_prefectures, $address_detail, $homepage, $email, $password);
         header('Location: login.php');
         exit;
     }
 }
-var_dump($address_prefectures);
-var_dump($address_prefectures_key);
-
 ?>
 
 <!DOCTYPE html>
@@ -47,7 +47,6 @@ var_dump($address_prefectures_key);
 
 <body>
     <?php include_once __DIR__ . '/_header.php' ?>
-    <!-- スパルタキャンプ作 -->
     <section class="signup_content wrapper">
         <h1 class="signup_title">新規ユーザー登録</h1>
         <?php if ($errors) : ?>
@@ -94,39 +93,6 @@ var_dump($address_prefectures_key);
             </div>
         </form>
     </section>
-    <!-- 葛川作 -->
-    <div class="signup_container">
-        <h1 class="signup_sub_title">無料で求人掲載</h1>
-        <div class="job_form">
-            会社名
-            <input type="text" name="company" placeholder="会社名をご入力ください">
-        </div>
-        本社 都道府県
-        <select name="item" id="type">
-            <?php foreach ($job_address_prefectures as $address_prefectures_key) :
-                echo '<option value="' . $address_prefectures_key . '">' . $address_prefectures_key . '</option>';
-            endforeach; ?>
-        </select>
-        <div class="job_form">
-            本社 市区町村番地 建物名
-            <input type="text" name="company" placeholder="市区町村番地 建物名をご入力ください">
-        </div>
-        <div class="job_form">
-            HP URL
-            <input type="text" name="company" placeholder="ホームページURLをご入力ください">
-        </div>
-        <div class="job_form">
-            メールアドレス(ログインID)
-            <input type="text" name="company" placeholder="メールアドレスをご入力ください">
-        </div>
-        <div class="job_form">
-            パスワード
-            <input type="text" name="company" placeholder="パスワードをご入力ください">
-        </div>
-        <div class="detail">
-            <input class="submit_button" type="submit" value="上記の内容で求人掲載する">
-        </div>
-
         <!-- フッター読み込み -->
         <?php include_once __DIR__ . '/_footer.php' ?>
 </body>
