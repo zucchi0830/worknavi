@@ -3,35 +3,24 @@
     session_start();
     ?>
 
-
 <!DOCTYPE html>
 <html lang="ja">
 <?php include_once __DIR__ . '/_head.php' ?>
 
-
-    <title>予約表</title>
-    <style>
-    table,tr,td,th{
-        border: solid 1px black; border-collapse: collapse;
-        padding: 5px 20px;
-
-    }
-    td,th{
-        min-width: 32px;
-    }
-    th{
-        background: #fff;
-    }
-    .management_table {
-    margin: 0 auto;
-    }
-    </style>
-    
 </head>
 <body>
 <?php include_once __DIR__ . '/_header.php' ?>
+
     <section class="management_content wrapper">
         <h1 class="signup_title">管理画面</h1> 
+            <div class="right_content">
+                <div class="login_info">
+                <ul>
+                    <li class="num_li"><?= $current_user['name'] ?></li>
+                    <li class="num_li"><?= $current_user['full_name'] ?>さん</li>
+                </ul>
+                </div>
+            </div>
         <table class="management_table">
             <tr>
                 <th>募集職種</th><th>勤務地</th><th>仕事内容</th><th>掲載ステータス</th><th>編集</th>

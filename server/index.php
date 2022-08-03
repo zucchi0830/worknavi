@@ -1,18 +1,19 @@
 <?php
 // 関数ファイルを読み込む
 require_once __DIR__ . '/common/functions.php';
-    // セッション開始
-    session_start();
+// セッション開始
+session_start();
 
 // データベースに接続
 $dbh = connect_db();
 
 // 変数の初期化
 $name = '';
-$name = '';
 $sel_address_prefectures = ['都道府県を選択してください', '青森県', '秋田県', '岩手県', '山形県', '宮城県', '福島県'];
-$sel_employment = ['雇用形態を選択してください','正社員', '契約社員', 'パートアルバイト', 'その他'];
+$sel_employment = ['雇用形態を選択してください', '正社員', '契約社員', 'パートアルバイト', 'その他'];
 
+$jobs = find_jobs_all();
+// $companys = find_companys_all();
 ?>
 
 <!DOCTYPE html>
@@ -21,18 +22,10 @@ $sel_employment = ['雇用形態を選択してください','正社員', '契�
 <?php include_once __DIR__ . '/_head.php' ?>
 
 <body>
-<?php include_once __DIR__ . '/_header.php' ?>
+    <?php include_once __DIR__ . '/_header.php' ?>
     <section class="search_content wrapper">
         <h1 class="signup_title">求人検索はこちら</h1>
-        <!-- <?php if ($errors) : ?>
-            <ul class="errors">
-                <?php foreach ($errors as $error) : ?>
-                    <li>
-                        <?= h($error) ?>
-                    </li>
-                <?php endforeach; ?>
-            </ul>
-        <?php endif; ?> -->
+
         <form class="signup_form" action="" method="post">
             <label class="address_prefectures_label signup_label" for="name">都道府県</label>
             <select name="address_prefectures" id="address_prefectures">
@@ -49,7 +42,7 @@ $sel_employment = ['雇用形態を選択してください','正社員', '契�
 
             <label class="name_label signup_label" for="name">職種</label>
             <input type="text" name="name" id="name" placeholder="職種名を入力してください" value="<?= h($name) ?>">
-            
+
             <label class="address_prefectures_label signup_label" for="name">雇用形態</label>
             <select name="address_prefectures" id="address_prefectures">
                 <?php foreach ($sel_employment as $employment_value) : ?>
@@ -63,13 +56,35 @@ $sel_employment = ['雇用形態を選択してください','正社員', '契�
                 <?php endforeach; ?>
             </select>
 
-                <input type="submit" value="検索する" class="search_button">
+            <input type="submit" value="検索する" class="search_button">
             </div>
         </form>
     </section>
 
     <div class="sub_title">
         <h1>最新の求人</h1>
+        <div class="jobs job1">
+        <?php foreach ($jobs as $job) : ?>
+                <div class="jobtitle">
+                <!-- <h1 class="index_job_title">会社名:<?=  $company["name"] ?></h1> -->
+
+                <ul>
+                    <li></li>
+                    <li>職種:<?=  $job['type'] ?></li>
+                    <li>勤務地:<?=  $job['address_prefectures']?></li>
+                    <li>雇用形態:<?=  $job['employment'] ?></li>
+                    <li>給与:<?=  $job['salary'] ?></li>
+                    <li>勤務時間:<?=  $job['work_hours'] ?></li>
+                    <li>休日:<?=  $job['holiday'] ?></li>
+                </ul>
+            <div class="detail">
+                <a class="detail_button" href="show.php?job_id=<?= h($job['id']) ?>">詳細を見る</a>
+            </div>
+        </div>
+        <hr>
+        <?php endforeach; ?>
+    </div>    
+        
 
         <div class="jobs job1">
             <div class="jobs_title jobs_left">
@@ -123,13 +138,13 @@ $sel_employment = ['雇用形態を選択してください','正社員', '契�
             </div>
         </div>
         <div class="detail">
-            <a class="detail_button" href="" alt="">他の求人を見る</a>
+            <a class="detail_button" href="show_list.php" alt="">他の求人を見る</a>
         </div>
         <div class="detail">
-            <a class="detail_button" href="" alt="">求人を掲載する</a>
+            <a class="detail_button" href="signup.php" alt="">求人を掲載する</a>
         </div>
-
-        <?php include_once __DIR__ . '/_footer.php' ?>
+    </div>
+    <?php include_once __DIR__ . '/_footer.php' ?>
 
 </body>
 

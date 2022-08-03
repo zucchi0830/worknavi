@@ -5,32 +5,56 @@ require_once __DIR__ . '/common/functions.php';
 // セッション開始
 session_start();
 
+
 // 変数の初期化
-$name = '';
-$address_prefectures = '';
-$address_detail = '';
-$homepage = '';
-$email = '';
-$password = '';
+$name =
+$address_prefectures =
+$address_detail =
+$homepage =
+$full_name =
+$email =
+$password =
 $address_prefectures_key = '';
 
 $errors = [];
 
 $sel_address_prefectures = ['都道府県を選択してください', '青森県', '秋田県', '岩手県', '山形県', '宮城県', '福島県'];
+// ログイン判定(ログイン状態なら管理画面へ遷移)
+if (isset($_SESSION['current_user'])) {
+    header('Location: management.php');
+    exit;
+}
+
+// ここから
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+
+    if (empty($errors)) {
+        $user = find_user_by_email($email);
+        if (!empty($user) && password_verify($password, $user['password'])) {
+            $_SESSION['current_user']['id'] = $user['id'];
+            $_SESSION['current_user']['name'] = $user['name'];
+            header('Location: management.php');
+            exit;
+        } else {
+            $errors[] = MSG_EMAIL_PASSWORD_NOT_MATCH;
+        }
+    }
+}
+// ↑ここまで、修正の必要あり?
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $name = filter_input(INPUT_POST, 'name');
     $address_prefectures = filter_input(INPUT_POST, 'address_prefectures');
-
     $address_detail = filter_input(INPUT_POST, 'address_detail');
     $homepage = filter_input(INPUT_POST, 'homepage');
+    $full_name = filter_input(INPUT_POST, 'full_name');
     $email = filter_input(INPUT_POST, 'email');
     $password = filter_input(INPUT_POST, 'password');
-    $errors = signup_validate($name, $address_prefectures, $address_detail, $homepage, $email, $password);
+    $errors = signup_validate($name, $address_prefectures, $address_detail, $full_name, $email, $password);
 
-    // エラーがなければ登録→画面偏移
+    // エラーがなければ登録→ログイン画面へ遷移
     if (empty($errors)) {
-        insert_company($name, $address_prefectures, $address_detail, $homepage, $email, $password);
+        insert_company($name, $address_prefectures, $address_detail, $homepage, $full_name, $email, $password);
         header('Location: login.php');
         exit;
     }
@@ -85,6 +109,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
             <label class="url_label  signup_label" for="name">HP URL</label>
             <input type="text" name="homepage" id="homepage" placeholder="HP URL" value="<?= h($homepage) ?>">
+
+            <label class="full_name_label  signup_label" for="full_name">担当者名</label>
+            <input type="text" name="full_name" id="full_name" placeholder="担当名" value="<?= h($full_name) ?>">
 
             <label class="email_label  signup_label" for="email">メールアドレス</label>
             <input type="email" name="email" id="email" placeholder="Email" value="<?= h($email) ?>">

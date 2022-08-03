@@ -26,6 +26,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         if (!empty($user) && password_verify($password, $user['password'])) {
             $_SESSION['current_user']['id'] = $user['id'];
             $_SESSION['current_user']['name'] = $user['name'];
+            $_SESSION['current_user']['full_name'] = $user['full_name'];            
             header('Location: management.php');
             exit;
         } else {

@@ -76,10 +76,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <label class="name_label signup_label" for="name">会社名</label>
             <input type="text" name="name" id="name" placeholder="会社名" value="<?= h($name) ?>">
 
-            <label class="name_label signup_label" for="name">氏名</label>
-            <input type="text" name="full_name" id="name" placeholder="氏名" value="<?= h($full_name) ?>">
+            <label class="full_name_label signup_label" for="full_name">氏名</label>
+            <input type="text" name="full_name" id="full_name" placeholder="氏名" value="<?= h($full_name) ?>">
 
-            <label class="address_prefectures_label signup_label" for="name">都道府県</label>
+            <label class="address_prefectures_label signup_label" for="address_prefectures">都道府県</label>
             <select name="address_prefectures" id="address_prefectures">
                 <?php foreach ($sel_address_prefectures as $value) : ?>
                     <?php if ($value === $address_prefectures) : ?>
@@ -92,10 +92,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <?php endforeach; ?>
             </select>
 
-            <label class="address_detail_label signup_label" for="name">市区町村番地 建物名</label>
+            <label class="address_detail_label signup_label" for="address_detail">市区町村番地 建物名</label>
             <input type="text" name="address_detail" id="address_detail" placeholder="建物名まで" value="<?= h($address_detail) ?>">
 
-            <label class="url_label signup_label" for="name">HP URL</label>
+            <label class="homepage_label signup_label" for="homepage">HP URL</label>
             <input type="text" name="homepage" id="homepage" placeholder="HP URL" value="<?= h($homepage) ?>">
 
             <label class="tel_label signup_label" for="tel">電話番号</label>

@@ -1,29 +1,27 @@
 <?php
 // 関数ファイルを読み込む
 require_once __DIR__ . '/common/functions.php';
-// セッション開始
+
+//セッション開始
 session_start();
 
 $current_user = '';
+$job_id = 0;
+$job = '';
 
-// パラメータが渡されていなければ一覧画面に戻す
-$job_id = filter_input(INPUT_GET, 'job_id');
-if (empty($job_id)) {
+// セッションにidが保持されていなければ一覧画面にリダイレクト
+// パラメータを受け取れなければ一覧画面にリダイレクト
+if (empty($_SESSION['current_user']) || 
+    empty($_GET['job_id'])) {
     header('Location: index.php');
     exit;
 }
-
-if (isset($_SESSION['current_user'])) {
-    $current_user = $_SESSION['current_user'];
-}
+$current_user = $_SESSION['current_user'];
 
 $job_id = filter_input(INPUT_GET, 'job_id');
-
-
-// idを基にデータを取得
 $job = find_job($job_id);
-
 ?>
+
 <!DOCTYPE html>
 <html lang="ja">
 <?php include_once __DIR__ . '/_head.php' ?>
@@ -179,22 +177,6 @@ $job = find_job($job_id);
             <a href="index.php" class="search_button" class="nav-link">他の求人を見る</a>
         </div>
 
-        <!-- <h1 class="signup_title">会社情報</h1>
-        <table class="management_table">
-            <tr>
-                <th>会社名</th><th><//?= h($job['name']) ?></th>
-            </tr>
-            <tr>
-                <th>本社住所</th><th><//?= h($job['address_prefectures']['address_detail']) ?></th>
-            </tr>
-            <tr>
-                <th>HP URL</th><th><//?= h($job['homepage']) ?></th>
-            </tr>
-        </table>
-            <div class="button_area">
-                <a href="index.php" class="search_button" class="nav-link">他の求人を見る</a>
-            </div> -->
-
         <div class="content">
             <?php if (!empty($current_user) && $current_user['id'] == $job['company_id']) : ?>
                 <div class="button">
@@ -205,6 +187,7 @@ $job = find_job($job_id);
             <?php endif; ?>
         </div>
     </section>
+                            
 
 
     <?php include_once __DIR__ . '/_footer.php' ?>
