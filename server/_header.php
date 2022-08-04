@@ -4,6 +4,7 @@
     session_start();
     $current_user = '';
     $current_full_name = '';
+    
     if (isset($_SESSION['current_user'])) {
         $current_user = $_SESSION['current_user'];
     }

@@ -164,8 +164,8 @@ function contact_validate(
     $tel,
     $email,
     $description
-) 
-{    $errors = [];
+) {
+    $errors = [];
 
     if (empty($name)) {  //会社名
         $errors[] = MSG_NAME_REQUIRED;
@@ -246,7 +246,10 @@ function insert_job(
     $salary,
     $allowance,
     $allowance_limit,
-    $insurances,
+    $insurance1,
+    $insurance2,
+    $insurance3,
+    $insurance4,
     $childcare_leave,
     $work_hours,
     $break_time,
@@ -272,14 +275,14 @@ function insert_job(
     INSERT INTO
         jobs
         (company_id, status, type, j_address_prefectures, j_address_detail, employment, station, smoke, commute, transfer,
-        academic, experience, qualification, salary, allowance, allowance_limit, insurances,
+        academic, experience, qualification, salary, allowance, allowance_limit, insurance1, insurance2, insurance3, insurance4,
         childcare_leave, work_hours, break_time, holiday, holiday_detail,
         retirement, retirement_remarks, rehire, trial_period, trial_period_span,
         trial_period_conditions, trial_period_conditions_detail, description,
         e_tel, e_tel_time, e_email, e_name, e_others)
     VALUES
         (:company_id, :status, :type, :j_address_prefectures, :j_address_detail, :employment, :station, :smoke, :commute, :transfer,
-        :academic, :experience, :qualification, :salary, :allowance, :allowance_limit, :insurances,
+        :academic, :experience, :qualification, :salary, :allowance, :allowance_limit, :insurance1, :insurance2, :insurance3, :insurance4,
         :childcare_leave, :work_hours, :break_time, :holiday, :holiday_detail,
         :retirement, :retirement_remarks, :rehire, :trial_period, :trial_period_span,
         :trial_period_conditions, :trial_period_conditions_detail, :description,
@@ -303,7 +306,10 @@ function insert_job(
     $stmt->bindValue(':salary', $salary, PDO::PARAM_STR);
     $stmt->bindValue(':allowance', $allowance, PDO::PARAM_STR);
     $stmt->bindValue(':allowance_limit', $allowance_limit, PDO::PARAM_STR);
-    $stmt->bindValue(':insurances', $insurances, PDO::PARAM_STR);
+    $stmt->bindValue(':insurance1', $insurance1, PDO::PARAM_STR);
+    $stmt->bindValue(':insurance2', $insurance2, PDO::PARAM_STR);
+    $stmt->bindValue(':insurance3', $insurance3, PDO::PARAM_STR);
+    $stmt->bindValue(':insurance4', $insurance4, PDO::PARAM_STR);
     $stmt->bindValue(':childcare_leave', $childcare_leave, PDO::PARAM_STR);
     $stmt->bindValue(':work_hours', $work_hours, PDO::PARAM_STR);
     $stmt->bindValue(':break_time', $break_time, PDO::PARAM_STR);
@@ -338,7 +344,11 @@ function job_signup_validate(
     $academic,
     $salary,
     $allowance,
-    $insurances,
+    $allowance_limit,
+    $insurance1,
+    $insurance2,
+    $insurance3,
+    $insurance4,
     $childcare_leave,
     $work_hours,
     $break_time,
@@ -371,7 +381,7 @@ function job_signup_validate(
         $errors[] = MSG_ADDRESS_DETAIL_REQUIRED;
     }
 
-    if ($employment == '雇用形態を選択してください') { //雇用形態
+    if (empty($employment)) { //雇用形態
         $errors[] = MSG_EMPLOYMENT_REQUIRED;
     }
 
@@ -387,7 +397,7 @@ function job_signup_validate(
         $errors[] = MSG_TRANSFER_REQUIRED;
     }
 
-    if ($academic == '必要学歴を選択してください') { //必要学歴
+    if (empty($academic)) { //== '必要学歴を選択してください' //必要学歴
         $errors[] = MSG_ACADEMIC_REQUIRED;
     }
 
@@ -399,9 +409,13 @@ function job_signup_validate(
         $errors[] = MSG_ALLOWANCE_REQUIRED;
     }
 
-    if (empty($insurances)) { //社会保険加入有無
-        $errors[] = MSG_INSURANCES_REQUIRED;
+    if ($allowance == '有' && empty($allowance_limit)) { //通勤手当上限
+        $errors[] = MSG_ALLOWANCE_LIMIT_REQUIRED;
     }
+
+    // if (empty($insurances)) { //社会保険加入有無
+    //     $errors[] = MSG_INSURANCES_REQUIRED;
+    // }
 
     if (empty($childcare_leave)) { //育休の取得実績有無
         $errors[] = MSG_CHILDCARE_LEAVE_REQUIRED;
@@ -427,9 +441,10 @@ function job_signup_validate(
         $errors[] = MSG_RETIREMENT_REQUIRED;
     }
 
-    if (empty($retirement_remarks)) { //定年年齢
+    if ($retirement == '有' && empty($retirement_remarks)) { //定年年齢
         $errors[] = MSG_RETIREMENT_REMARKS_REQUIRED;
     }
+
 
     if (empty($rehire)) { //再雇用制度
         $errors[] = MSG_REHIRE_REQUIRED;
@@ -439,7 +454,7 @@ function job_signup_validate(
         $errors[] = MSG_TRIAL_PERIOD_REQUIRED;
     }
 
-    if (empty($trial_period_span)) { //試用期間
+    if ($trial_period == '有' && empty($trial_period_span)) { //試用期間
         $errors[] = MSG_TRIAL_PERIOD_SPAN_REQUIRED;
     }
 
@@ -447,7 +462,7 @@ function job_signup_validate(
         $errors[] = MSG_TRIAL_PERIOD_CONDITIONS_REQUIRED;
     }
 
-    if (empty($trial_period_conditions_detail)) { //試用期間中の労働条件詳細
+    if ($trial_period_conditions == '有' && empty($trial_period_conditions_detail)) { //試用期間中の労働条件詳細
         $errors[] = MSG_TRIAL_PERIOD_CONDITIONS_DETAIL_REQUIRED;
     }
 
@@ -484,7 +499,7 @@ function find_com_job_all()
     INNER JOIN jobs
     ON companys.id = jobs.company_id;
     EOM;
-    
+
     $stmt = $dbh->prepare($sql);
     $stmt->execute();
 
@@ -504,7 +519,7 @@ function find_com_job($id)
     WHERE id=:id;
 
     EOM;
-    
+
     $stmt = $dbh->prepare($sql);
     $stmt->bindValue(':id', $id, PDO::PARAM_INT);
     $stmt->execute();
@@ -512,76 +527,23 @@ function find_com_job($id)
     return $stmt->fetch(PDO::FETCH_ASSOC);
 }
 
-// 求人情報のcompany_idをもとに会社名を取得(index.php)
-// function find_jobs_company_name($company_id)
-// {
-//     $dbh = connect_db();
-
-//     $sql = <<<EOM
-//     SELECT
-//         *
-//     FROM
-//         companys
-//     WHERE
-//         id = :id;
-//     EOM;
-
-//     $stmt = $dbh->prepare($sql);
-//     $stmt->bindValue(':id', $company_id, PDO::PARAM_STR);
-//     $stmt->execute();
-
-//     return $stmt->fetch(PDO::FETCH_ASSOC);
-// }
-
-// function find_jobs_company_name($company_id)
-// {
-//     $dbh = connect_db();
-
-//     $sql = <<<EOM
-//     SELECT 
-//         * 
-//     FROM 
-//         companys
-//     WHERE 
-//         id = :id;
-//     EOM;
-    
-//     $stmt = $dbh->prepare($sql);
-//     $stmt->bindValue(':id', $company_id, PDO::PARAM_INT);
-//     $stmt->execute();
-
-//     return $stmt->fetch(PDO::FETCH_ASSOC);
-// }
-
-// 会社情報を全て取得(index)
-function find_companys_all()
+// currentidをもとに自分の求人を取得(show.php)
+function find_my_job($id)
 {
     $dbh = connect_db();
 
-    $sql = 'SELECT * FROM companys';
+    $sql = <<<EOM
+    SELECT * 
+    FROM companys 
+    INNER JOIN jobs
+    ON companys.id = jobs.company_id;
+    WHERE id=:id;
+
+    EOM;
+
     $stmt = $dbh->prepare($sql);
+    $stmt->bindValue(':id', $id, PDO::PARAM_INT);
     $stmt->execute();
 
-    return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    return $stmt->fetch(PDO::FETCH_ASSOC);
 }
-
-// 会社情報のidをもとに取得(show.php)
-// function find_company($id)
-// {
-//     $dbh = connect_db();
-
-//     $sql = <<<EOM
-//     SELECT 
-//         * 
-//     FROM 
-//         companys 
-//     WHERE 
-//         id = :id;
-//     EOM;
-    
-//     $stmt = $dbh->prepare($sql);
-//     $stmt->bindValue(':id', $id, PDO::PARAM_INT);
-//     $stmt->execute();
-
-//     return $stmt->fetch(PDO::FETCH_ASSOC);
-// }

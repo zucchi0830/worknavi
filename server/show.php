@@ -148,7 +148,7 @@ $job = find_com_job($job_id);
             </tr>
         </table>
 
-        <h1 class="signup_title">応募先情報</h1>
+        <h1 class="signup_title">応募はこちらから</h1>
         <table class="management_table">
             <tr>
                 <th>応募先電話番号</th>
@@ -179,7 +179,7 @@ $job = find_com_job($job_id);
             <a href="index.php" class="search_button" class="nav-link">ここにアフィリエイト ここにアフィリエイト</a>
         </div>
 
-        <h1 class="signup_title">会社情報</h1>
+        <h1 class="signup_title">応募先の会社情報</h1>
         <table class="management_table">
             <tr>
                 <th>会社名</th><th><?= h($job['name']) ?></th>

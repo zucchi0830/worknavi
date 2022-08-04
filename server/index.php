@@ -89,7 +89,8 @@ $companys_jobs = find_com_job_all();
     </div>    
         
 
-        <div class="jobs job1">
+<!-- ↓モックアップ用 -->
+        <!-- <div class="jobs job1">
             <div class="jobs_title jobs_left">
                 <h2>企業名:◯◯</h2>
                 <img src="/images/sample.png" alt="aaa">
@@ -139,13 +140,17 @@ $companys_jobs = find_com_job_all();
             <div class="detail">
                 <a class="detail_button" href="" alt="">詳細を見る</a>
             </div>
-        </div>
+        </div> -->
         <div class="detail">
             <a class="detail_button" href="show_list.php" alt="">他の求人を見る</a>
         </div>
         <div class="detail">
             <a class="detail_button" href="signup.php" alt="">求人を掲載する</a>
         </div>
+        <div class="detail">
+            <a class="detail_button" href="signup.php" alt="">ここにアフィリエイト ここにアフィリエイト</a>
+        </div>
+        
     </div>
     <?php include_once __DIR__ . '/_footer.php' ?>
 
