@@ -7,7 +7,7 @@ session_start();
 $current_user = '';
 
 // パラメータが渡されていなければ一覧画面に戻す
-$job_id = filter_input(INPUT_GET, 'job_id');
+$job_id = filter_input(INPUT_GET,'job_id');
 if (empty($job_id)) {
     header('Location: index.php');
     exit;
@@ -16,14 +16,12 @@ if (empty($job_id)) {
 if (isset($_SESSION['current_user'])) {
     $current_user = $_SESSION['current_user'];
 }
-
-$job_id = filter_input(INPUT_GET, 'job_id');
-
+// $job_id = filter_input(INPUT_GET, 'job_id');
 
 // idを基にデータを取得
 $job = find_com_job($job_id);
-
 ?>
+
 <!DOCTYPE html>
 <html lang="ja">
 <?php include_once __DIR__ . '/_head.php' ?>
@@ -92,7 +90,7 @@ $job = find_com_job($job_id);
             </tr>
             <tr>
                 <th>社会保険</th>
-                <th><?= h($job['insurances']) ?></th>
+                <th><?= h($job['insurance1'] . " " . $job['insurance2'] . " " . $job['insurance3'] . " " . $job['insurance4']) ?></th>
             </tr>
             <tr>
                 <th>育休の取得実績有無</th>

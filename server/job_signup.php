@@ -13,6 +13,7 @@ $current_user = $_SESSION['current_user'];
 
 // 変数の初期化
 $status = 1;
+$company_id =
 $type =
 $j_address_prefectures =
 $j_address_detail =
@@ -122,7 +123,7 @@ if (empty($errors)) {
     exit;
     }
 }
-var_dump($allowance);
+var_dump($insurance1);
 ?>
 
 <!DOCTYPE html>
@@ -248,31 +249,31 @@ var_dump($allowance);
             <label class="insurances_label signup_label" for="insurances">社会保険<span class="asterisk">*</span></label>
             <?php if ( $insurance1 == $sel_insurances[1]) : ?>
                 <!-- ① POST データが存在する場合はこちらの分岐に入る -->
-                <?= "<input type='checkbox' name='insurance1' value='1' id='$sel_insurances[1]' checked>" . "<label for='$sel_insurances[1]'>" . "$sel_insurances[1]". "</label>" ?>
+                <?= "<input type='checkbox' name='insurance1' value='$sel_insurances[1]' id='$sel_insurances[1]' checked>" . "<label for='$sel_insurances[1]'>" . "$sel_insurances[1]". "</label>" ?>
             <?php else : ?>
                 <!-- ② POST データが存在しない場合はこちらの分岐に入る -->
-                <?= "<input type='checkbox' name='insurance1' value='1' id='$sel_insurances[1]'>" . "<label for='$sel_insurances[1]'>" . "$sel_insurances[1]". "</label>" ?>
+                <?= "<input type='checkbox' name='insurance1' value='$sel_insurances[1]' id='$sel_insurances[1]'>" . "<label for='$sel_insurances[1]'>" . "$sel_insurances[1]". "</label>" ?>
             <?php endif; ?>
             <?php if ( $insurance2 == $sel_insurances[2]) : ?>
                 <!-- ① POST データが存在する場合はこちらの分岐に入る -->
-                <?= "<input type='checkbox' name='insurance2' value='1' id='$sel_insurances[2]' checked>" . "<label for='$sel_insurances[2]'>" . "$sel_insurances[2]". "</label>" ?>
+                <?= "<input type='checkbox' name='insurance2' value='$sel_insurances[2]' id='$sel_insurances[2]' checked>" . "<label for='$sel_insurances[2]'>" . "$sel_insurances[2]". "</label>" ?>
             <?php else : ?>
                 <!-- ② POST データが存在しない場合はこちらの分岐に入る -->
-                <?= "<input type='checkbox' name='insurance2' value='1' id='$sel_insurances[2]'>" . "<label for='$sel_insurances[2]'>" . "$sel_insurances[2]". "</label>" ?>
+                <?= "<input type='checkbox' name='insurance2' value='$sel_insurances[2]' id='$sel_insurances[2]'>" . "<label for='$sel_insurances[2]'>" . "$sel_insurances[2]". "</label>" ?>
             <?php endif; ?>
             <?php if ( $insurance3 == $sel_insurances[3]) : ?>
                 <!-- ① POST データが存在する場合はこちらの分岐に入る -->
-                <?= "<input type='checkbox' name='insurance3' value='1' id='$sel_insurances[3]' checked>" . "<label for='$sel_insurances[3]'>" . "$sel_insurances[3]". "</label>" ?>
+                <?= "<input type='checkbox' name='insurance3' value='$sel_insurances[3]' id='$sel_insurances[3]' checked>" . "<label for='$sel_insurances[3]'>" . "$sel_insurances[3]". "</label>" ?>
             <?php else : ?>
                 <!-- ② POST データが存在しない場合はこちらの分岐に入る -->
-                <?= "<input type='checkbox' name='insurance3' value='1' id='$sel_insurances[3]'>" . "<label for='$sel_insurances[3]'>" . "$sel_insurances[3]". "</label>" ?>
+                <?= "<input type='checkbox' name='insurance3' value='$sel_insurances[3]' id='$sel_insurances[3]'>" . "<label for='$sel_insurances[3]'>" . "$sel_insurances[3]". "</label>" ?>
             <?php endif; ?>
             <?php if ( $insurance4 == $sel_insurances[4]) : ?>
                 <!-- ① POST データが存在する場合はこちらの分岐に入る -->
-                <?= "<input type='checkbox' name='insurance4' value='1' id='$sel_insurances[4]' checked>" . "<label for='$sel_insurances[4]'>" . "$sel_insurances[4]". "</label>" ?>
+                <?= "<input type='checkbox' name='insurance4' value='$sel_insurances[4]' id='$sel_insurances[4]' checked>" . "<label for='$sel_insurances[4]'>" . "$sel_insurances[4]". "</label>" ?>
             <?php else : ?>
                 <!-- ② POST データが存在しない場合はこちらの分岐に入る -->
-                <?= "<input type='checkbox' name='insurance4' value='$1' id='$sel_insurances[4]'>" . "<label for='$sel_insurances[4]'>" . "$sel_insurances[4]". "</label>" ?>
+                <?= "<input type='checkbox' name='insurance4' value='$sel_insurances[4]' id='$sel_insurances[4]'>" . "<label for='$sel_insurances[4]'>" . "$sel_insurances[4]". "</label>" ?>
             <?php endif; ?>
 
             <label class="childcare_leave_label  signup_label" for="childcare_leave">育休の取得実績<span class="asterisk">*</span></label>
