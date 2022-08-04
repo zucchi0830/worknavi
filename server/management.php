@@ -38,7 +38,10 @@ $jobs = find_com_job_all();
                     <tr>
                     <th><?=  $job['company_id'].$job['name'] ?></th><th><?=  $job['type'] ?></th><th><?=  $job['j_address_prefectures']. $job['j_address_detail']?></th>
                     <th><?=  $job['description']?></th><th><a class="signup_button" href="show.php?job_id=<?= h($job['id']) ?>">掲載中</a></th>
-                    <th>編集する<br>一時停止<br>削除</th>
+                    <th>編集する<br>一時停止<br>
+                    <button class="delete_button" onclick="if (!confirm('本当に削除してよろしいですか？')) {return false}; 
+                        location.href='delete.php?job_id=<?= h($job['id']) ?>'">削 除</button>
+                    </th>
                 </tr>
                 </div>
             <?php endif; ?>    

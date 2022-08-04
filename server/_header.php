@@ -3,14 +3,11 @@
     // セッション開始
     session_start();
     $current_user = '';
-    $current_full_name = '';
-    
+
     if (isset($_SESSION['current_user'])) {
         $current_user = $_SESSION['current_user'];
     }
-    if (isset($_SESSION['current_full_name'])) {
-        $current_full_name = $_SESSION['current_full_name'];
-    }
+
 ?>
     <div class="header">
         <div class="header_logo"><a href="index.php">東北ワークナビ</a></div>

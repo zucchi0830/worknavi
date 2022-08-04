@@ -10,6 +10,7 @@ if (empty($_SESSION['current_user'])) {
     exit;
 }
 $current_user = $_SESSION['current_user'];
+// $job = find_com_job($job_id);
 
 // 変数の初期化
 $status = 1;
@@ -53,6 +54,8 @@ $e_email =
 $e_name =
 $e_others = '';
 
+$job = '';
+
 $errors = [];
 
 // 配列の用意
@@ -63,6 +66,8 @@ $sel_insurances = ['','労災保険', '労働保険', '健康保険', '厚生年
 $sel_commute = ['可(駐車場有)', '可(駐車場無)', 'バイク可', '不可'];
 $sel_smoke =['敷地内全面禁煙','分煙室設置'];
 $sel_ornot =['有','無'];
+
+$e_name = $current_user['full_name'];
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $type = filter_input(INPUT_POST, 'type');
@@ -123,7 +128,11 @@ if (empty($errors)) {
     exit;
     }
 }
-var_dump($insurance1);
+// var_dump($current_user['email']);
+// var_dump($current_user['id']);
+// var_dump($current_user['name']);
+// var_dump($current_user['full_name']);
+var_dump($current_user);
 ?>
 
 <!DOCTYPE html>

@@ -193,13 +193,15 @@ $job = find_com_job($job_id);
                 <a href="index.php" class="search_button" class="nav-link">他の求人を見る</a>
             </div>
 
-        <div class="content">
+            <div class="content">
             <?php if (!empty($current_user) && $current_user['id'] == $job['company_id']) : ?>
                 <div class="button">
                     <a href="edit.php" class="edit_button">
                         <a href="edit.php?job_id=<?= h($job['id']) ?>" class="edit_button">編 集</a>
-                        <button class="delete_button">削 除</button>
+                        <button class="delete_button" onclick="if (!confirm('本当に削除してよろしいですか？')) {return false}; 
+                        location.href='delete.php?job_id=<?= h($job['id']) ?>'">削 除</button>
                 </div>
+            </div>
             <?php endif; ?>
         </div>
     </section>

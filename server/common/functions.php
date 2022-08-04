@@ -659,3 +659,21 @@ $dbh = connect_db();
 
     $stmt->execute();
 }
+
+// 求人削除機能
+function delete_job($id)
+{
+    $dbh = connect_db();
+
+    $sql = <<<EOM
+    DELETE 
+        FROM 
+    jobs 
+        WHERE 
+    id = :id;
+    EOM;
+
+    $stmt = $dbh->prepare($sql);
+    $stmt->bindValue(':id', $id, PDO::PARAM_INT);
+    $stmt->execute();
+}
