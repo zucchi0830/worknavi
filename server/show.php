@@ -195,12 +195,19 @@ $job = find_com_job($job_id);
 
             <div class="content">
             <?php if (!empty($current_user) && $current_user['id'] == $job['company_id']) : ?>
+                <h1>管理者情報</h1>
                 <div class="button">
                     <a href="edit.php" class="edit_button">
-                        <a href="edit.php?job_id=<?= h($job['id']) ?>" class="edit_button">編 集</a>
+                        <a href="edit.php?job_id=<?= h($job['id']) ?>" class="edit_button">編集</a>
                         <button class="delete_button" onclick="if (!confirm('本当に削除してよろしいですか？')) {return false}; 
-                        location.href='delete.php?job_id=<?= h($job['id']) ?>'">削 除</button>
-                </div>
+                        location.href='delete.php?job_id=<?= h($job['id']) ?>'">削除</button>
+                </div><br>
+                掲載ステータス:
+                <?php if ($job['status'] == true) : ?>掲載中<button class="status_stop_button" onclick="if (!confirm('掲載を停止してよろしいですか？')) {return false}; 
+                                location.href='status_stop.php?job_id=<?= h($job['id']) ?>'"><u>(掲載停止する)</u>
+                <?php elseif($job['status'] == false) : ?>掲載停止中 <button class="status_start_button" onclick="if (!confirm('求人を掲載してよろしいですか？')) {return false}; 
+                location.href='status_start.php?job_id=<?= h($job['id']) ?>'"><u>(掲載開始する)</u>
+                <?php endif; ?>                
             </div>
             <?php endif; ?>
         </div>

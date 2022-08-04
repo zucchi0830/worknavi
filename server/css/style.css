@@ -15,7 +15,8 @@ h1 {
     padding: 1% 0;
     font-size: 32px;
 }
-.index_job_title{
+
+.index_job_title {
     padding: 3% 0;
     font-size: 32px;
 }
@@ -40,8 +41,9 @@ p {
     padding: 0.5% 0;
 }
 
-.submit_button{
-border: none;}
+.submit_button {
+    border: none;
+}
 
 .wrapper {
     width: 80%;
@@ -54,21 +56,29 @@ li {
     list-style-type: none;
 }
 
-table,tr,td,th{
-    border: solid 1px black; border-collapse: collapse;
-    padding: 5px 20px;
+table,
+tr,
+td,
+th {
+    border: solid 1px black;
+    border-collapse: collapse;
+    padding: 5px;
 }
-td,th{
+
+td,
+th {
     min-width: 32px;
 }
-th{
+
+th {
     background: #fff;
 }
+
 .management_table {
-margin: 0 auto;
-display:flex;
-justify-content: center;
-border:none;
+    margin: 0 auto;
+    display: flex;
+    justify-content: center;
+    border: none;
 }
 
 /* ヘッダー */
@@ -107,25 +117,30 @@ border:none;
 .right_content {
     display: flex;
 }
+
 .login_info {
     margin-right: 20px;
     align-items: center;
     display: flex;
 }
+
 .login_info p {
     margin-right: 10px;
     font-size: 20px;
     color: #ffffff;
 }
+
 .header_logout_button {
     align-items: center;
     text-decoration: none;
 }
+
 .header_login_button {
     display: flex;
     align-items: center;
     text-decoration: none;
 }
+
 /* index.php */
 /* 検索フォーム */
 .top_form {
@@ -154,15 +169,15 @@ border:none;
     color: #000;
     border: none;
     display: block;
-    margin: 20px auto 0 ;
+    margin: 20px auto 0;
     border-radius: 30px;
     padding: 15px 0;
     width: 48%;
-    text-align:center;
+    text-align: center;
 }
 
-.checkbox{
-margin: 0 2px 0 10px;
+.checkbox {
+    margin: 0 2px 0 10px;
 }
 
 /* 最新の求人 */
@@ -252,7 +267,7 @@ p {
 }
 
 /* スパルタキャンプ作 */
-.signup_label{
+.signup_label {
     display: block;
     margin: 10px 0px;
 }
@@ -277,7 +292,7 @@ p {
 .management_content {
     background-color: #ff990040;
     border-radius: 10px;
-    width: 85%;
+    width: 90%;
     margin: 50px auto;
     padding: 25px 50px;
 }
@@ -294,12 +309,50 @@ p {
     display: block
 }
 
+.th_type {
+    width: 15%;
+}
+
+.th_status {
+    width: 15%;
+    padding: 5px;
+}
+
+.th_description {
+    width: 40%;
+}
+
+.th_company,
+.th_edit,
+.th_address {
+    width: 10%;
+}
+
+.status_stop_now_button {
+    background: #999;
+    padding: 5%;
+    width: 80%;
+    color: #000;
+    text-indent: 0.5rem;
+    border-radius: 30px;
+}
+
+.status_start_now_button {
+    background: #f90;
+    padding: 5%;
+    width: 80%;
+    color: #000;
+    letter-spacing: 0.5rem;
+    text-indent: 0.5rem;
+    border-radius: 30px;
+}
+
 /* signup.php */
-.signup_wrapper{
+.signup_wrapper {
     width: 500px;
     margin: 30px auto 0;
     border-radius: 5px;
-    padding:25px 50px;
+    padding: 25px 50px;
 }
 
 .signup_content {
@@ -309,13 +362,15 @@ p {
     margin: 30px auto;
     padding: 50px;
 }
+
 .signup_title {
     text-align: center;
 }
-.nom_li{
-list-style-type: auto;
-margin: 20px;
-font-size: 20px;
+
+.nom_li {
+    list-style-type: auto;
+    margin: 20px;
+    font-size: 20px;
 }
 
 .email_label,
@@ -324,13 +379,14 @@ font-size: 20px;
     display: block;
     margin: 10px 0px;
 }
+
 input[type="email"],
 input[type="text"],
-input[type="tel"] ,
-input[type="password"] ,
-input[type="number"] ,
+input[type="tel"],
+input[type="password"],
+input[type="number"],
 select,
-textarea{
+textarea {
     display: block;
     width: 100%;
     background-color: #FFFFFF;
@@ -340,11 +396,12 @@ textarea{
     appearance: auto;
 }
 
-input[type="radio"] , input[type="checkbox"]{
-   -webkit-transform: scale(1.5);
-   transform: scale(1.5);
-   margin: 0 5px 0 10px;
-   }
+input[type="radio"],
+input[type="checkbox"] {
+    -webkit-transform: scale(1.5);
+    transform: scale(1.5);
+    margin: 0 5px 0 10px;
+}
 
 input[type="tel"]::placeholder,
 input[type="email"]::placeholder,
@@ -352,11 +409,13 @@ input[type="text"]::placeholder,
 input[type="password"]::placeholder {
     color: #999999;
 }
+
 .button_area {
     margin-top: 30px;
     display: flex;
     justify-content: space-between;
 }
+
 .login_button,
 .signup_button {
     background: #FF9900;
@@ -368,7 +427,7 @@ input[type="password"]::placeholder {
     border-radius: 30px;
 }
 
-.thanks_back_button{
+.thanks_back_button {
     text-align: center;
     padding: 15px;
     width: 85%;
@@ -376,7 +435,7 @@ input[type="password"]::placeholder {
     color: #000;
     border-radius: 30px;
     text-decoration: none;
-    }
+}
 
 .signup_button {
     text-align: center;
@@ -396,9 +455,11 @@ input[type="password"]::placeholder {
     margin: 50px auto;
     padding: 50px;
 }
+
 .login_title {
     text-align: center;
 }
+
 .login_button {
     border-radius: 30px;
     background: #FF9900;
@@ -408,6 +469,7 @@ input[type="password"]::placeholder {
     letter-spacing: 0.5rem;
     text-indent: 0.5rem
 }
+
 .signup_page_button,
 .login_page_button {
     border-radius: 30px;
@@ -420,7 +482,7 @@ input[type="password"]::placeholder {
 }
 
 /* contact.php */
-.contact_button{
+.contact_button {
     text-align: center;
     padding: 15px 0;
     width: 85%;
@@ -432,84 +494,101 @@ input[type="password"]::placeholder {
 }
 
 /* job_signup.php */
-.job_signup_content{
+.job_signup_content {
     background-color: #ff990040;
     border-radius: 10px;
     width: 900px;
     margin: 30px auto;
     padding: 50px;
 }
-.asterisk{
-    color:red;
-    font-size:20px;
+
+.asterisk {
+    color: red;
+    font-size: 20px;
     font-weight: 700;
 }
 
- /* レスポンシブ */
+/* レスポンシブ */
 @media (max-width: 900px) {
+
     /* upload.php */
     .upload_content_label {
         height: 355px;
     }
+
     .upload_content_form {
         width: 70%;
     }
+
     /* show.php */
     .content {
         width: 70%;
     }
+
     /* .job_signup.php */
-    .job_signup_content{
-    width: 70%;
+    .job_signup_content {
+        width: 70%;
     }
 }
+
 @media (max-width: 600px) {
+
     /* upload.php */
     .upload_content_form {
         width: 90%;
     }
+
     /* index.php*/
     .article {
         padding-bottom: 10%;
     }
+
     /* show.php */
     .content {
         width: 90%;
     }
+
     /* signup.php */
     .signup_content {
         width: 70%;
     }
+
     .button_area {
         margin-top: 15px;
         flex-direction: column;
     }
+
     .signup_button {
         width: 100%;
         padding: 10px;
     }
+
     .login_page_button {
         width: 100%;
         text-align: center;
         margin-top: 5px;
         padding: 10px;
     }
-     /* login.php */
+
+    /* login.php */
     .login_content {
         width: 70%;
     }
+
     .login_button {
         width: 100%;
         padding: 10px;
     }
+
     .signup_page_button {
         text-align: center;
         width: 100%;
         margin-top: 5px;
         padding: 10px;
     }
+
     /* .job_signup.php */
-    .job_signup_content{
-    width: 90%;
+    .job_signup_content {
+        width: 90%;
     }
 }

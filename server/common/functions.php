@@ -723,3 +723,43 @@ function delete_job($id)
     $stmt->bindValue(':id', $id, PDO::PARAM_INT);
     $stmt->execute();
 }
+
+// 求人掲載ステータス → 一時停止
+function status_stop($job_id)
+{
+$dbh = connect_db();
+
+    $sql = <<<EOM
+    UPDATE
+        jobs
+    SET
+        status = false
+    WHERE
+        id = :id
+    EOM;
+
+    $stmt = $dbh->prepare($sql);
+    // $stmt->bindValue(':status', $status, PDO::PARAM_STR);
+    $stmt->bindValue(':id', $job_id, PDO::PARAM_STR);
+    $stmt->execute();
+}
+
+
+function status_start($job_id)
+{
+$dbh = connect_db();
+
+    $sql = <<<EOM
+    UPDATE
+        jobs
+    SET
+        status = true
+    WHERE
+        id = :id
+    EOM;
+
+    $stmt = $dbh->prepare($sql);
+    // $stmt->bindValue(':status', $status, PDO::PARAM_STR);
+    $stmt->bindValue(':id', $job_id, PDO::PARAM_STR);
+    $stmt->execute();
+}
