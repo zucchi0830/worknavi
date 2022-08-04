@@ -69,32 +69,7 @@ $current_user = $_SESSION['current_user'];
 $job_id = filter_input(INPUT_GET, 'job_id');
 $job = find_com_job($job_id);
 
-// if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-//     $description = filter_input(INPUT_POST, 'description');
-//     // アップロードした画像のファイル名
-//     // 変更がない場合は更新しない
-//     if ($_FILES['image']['name'] != $photo['image']) {
-//         $upload_file = $_FILES['image']['name'];
-//         // サーバー上で一時的に保存されるテンポラリファイル名
-//         $upload_tmp_file = $_FILES['image']['tmp_name'];
-//     }
 
-//     $errors = job_signup_validate(
-//         $type,$j_address_prefectures,$j_address_detail,$employment,$smoke,$commute,$transfer,$academic, $salary,
-//         $allowance, $allowance_limit, $insurance1, $insurance2, $insurance3, $insurance4, $childcare_leave,$work_hours,$break_time,$holiday,$holiday_detail,
-//         $retirement,$retirement_remarks,$rehire,$trial_period,$trial_period_span,
-//         $trial_period_conditions,$trial_period_conditions_detail,$description,
-//         $e_tel,$e_tel_time,$e_email,$e_name);
-            
-//         if (empty($errors)) {
-//             if (empty($upload_file)) {
-//                 update_photo($photo_id, $description);
-//                 update_photo($photo_id, $description, $image_name);
-//                 }
-//             }
-//             header('Location: show.php?photo_id=' . $photo_id);
-//             exit;
-//     }
 
 // 配列の用意
 $sel_address_prefectures = ['都道府県を選択してください', '青森県', '秋田県', '岩手県', '山形県', '宮城県', '福島県'];
@@ -152,12 +127,55 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $trial_period_conditions,$trial_period_conditions_detail,$description,
     $e_tel,$e_tel_time,$e_email,$e_name);
 
+if (empty($errors)) {
+        update_job_all(
+    $job_id,
+    $type,
+    $j_address_prefectures,
+    $j_address_detail,
+    $employment,
+    $station,
+    $smoke,
+    $commute,
+    $transfer,
+    $academic,
+    $experience,
+    $qualification,
+    $salary,
+    $allowance,
+    $allowance_limit,
+    $insurance1,
+    $insurance2,
+    $insurance3,
+    $insurance4,
+    $childcare_leave,
+    $work_hours,
+    $break_time,
+    $holiday,
+    $holiday_detail,
+    $retirement,
+    $retirement_remarks,
+    $rehire,
+    $trial_period,
+    $trial_period_span,
+    $trial_period_conditions,
+    $trial_period_conditions_detail,
+    $description,
+    $e_tel,
+    $e_tel_time,
+    $e_email,
+    $e_name,
+    $e_others);
 }
-var_dump($job['insurance1']);
-var_dump($job['insurance2']);
-var_dump($job['insurance3']);
-var_dump($job['insurance4']);
-var_dump($insurance1);
+
+    header('Location: show.php?job_id=' . $job_id);
+    exit;
+
+    }
+
+echo "<pre>";
+var_dump($type);
+echo "</pre>";
 ?>
 
 <!DOCTYPE html>

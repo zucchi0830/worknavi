@@ -128,11 +128,6 @@ if (empty($errors)) {
     exit;
     }
 }
-// var_dump($current_user['email']);
-// var_dump($current_user['id']);
-// var_dump($current_user['name']);
-// var_dump($current_user['full_name']);
-var_dump($current_user);
 ?>
 
 <!DOCTYPE html>

@@ -554,9 +554,9 @@ function update_photo($id, $description)
 }
 
 
-//求人の一括編集・更新機能
+//求人の一括編集・更新機能 控え
 function update_job_all(
-    $status,
+    $job_id,
     $type,
     $j_address_prefectures,
     $j_address_detail,
@@ -599,27 +599,52 @@ $dbh = connect_db();
 
     $sql = <<<EOM
     UPDATE
-        jobs
-        (status, type, j_address_prefectures, j_address_detail, employment, station, smoke, commute, transfer,
-        academic, experience, qualification, salary, allowance, allowance_limit, insurance1, insurance2, insurance3, insurance4,
-        childcare_leave, work_hours, break_time, holiday, holiday_detail,
-        retirement, retirement_remarks, rehire, trial_period, trial_period_span,
-        trial_period_conditions, trial_period_conditions_detail, description,
-        e_tel, e_tel_time, e_email, e_name, e_others)
+    jobs
+
     SET
-        (:status, :type, :j_address_prefectures, :j_address_detail, :employment, :station, :smoke, :commute, :transfer,
-        :academic, :experience, :qualification, :salary, :allowance, :allowance_limit, :insurance1, :insurance2, :insurance3, :insurance4,
-        :childcare_leave, :work_hours, :break_time, :holiday, :holiday_detail,
-        :retirement, :retirement_remarks, :rehire, :trial_period, :trial_period_span,
-        :trial_period_conditions, :trial_period_conditions_detail, :description,
-        :e_tel, :e_tel_time, :e_email, :e_name, :e_others)
+    type = :type,
+    j_address_prefectures = :j_address_prefectures,
+    j_address_detail = :j_address_detail,
+    employment = :employment,
+    station = :station,
+    smoke = :smoke,
+    commute = :commute,
+    transfer = :transfer,
+    academic = :academic,
+    experience = :experience,
+    qualification = :qualification,
+    salary = :salary,
+    allowance = :allowance,
+    allowance_limit = :allowance_limit,
+    insurance1 = :insurance1,
+    insurance2 = :insurance2,
+    insurance3 = :insurance3,
+    insurance4 = :insurance4,
+    childcare_leave = :childcare_leave,
+    work_hours = :work_hours,
+    break_time = :break_time,
+    holiday = :holiday,
+    holiday_detail = :holiday_detail,
+    retirement = :retirement,
+    retirement_remarks = :retirement_remarks,
+    rehire = :rehire,
+    trial_period = :trial_period,
+    trial_period_span = :trial_period_span,
+    trial_period_conditions = :trial_period_conditions,
+    trial_period_conditions_detail = :trial_period_conditions_detail,
+    description = :description,
+    e_tel = :e_tel,
+    e_tel_time = :e_tel_time,
+    e_email = :e_email,
+    e_name = :e_name,
+    e_others = :e_others
         
     WHERE
         id = :id
     EOM;
 
     $stmt = $dbh->prepare($sql);
-    $stmt->bindValue(':status', $status, PDO::PARAM_STR);
+    // $stmt->bindValue(':status', $status, PDO::PARAM_STR);
     $stmt->bindValue(':type', $type, PDO::PARAM_STR);
     $stmt->bindValue(':j_address_prefectures', $j_address_prefectures, PDO::PARAM_STR);
     $stmt->bindValue(':j_address_detail', $j_address_detail, PDO::PARAM_STR);
@@ -656,7 +681,28 @@ $dbh = connect_db();
     $stmt->bindValue(':e_email', $e_email, PDO::PARAM_STR);
     $stmt->bindValue(':e_name', $e_name, PDO::PARAM_STR);
     $stmt->bindValue(':e_others', $e_others, PDO::PARAM_STR);
+    $stmt->bindValue(':id', $job_id, PDO::PARAM_STR);
 
+    $stmt->execute();
+}
+//求人の一括編集・更新機能
+function update_job_all2($job_id,$type)
+{
+$dbh = connect_db();
+
+    $sql = <<<EOM
+    UPDATE
+        jobs
+    SET
+        type = :type
+
+    WHERE
+        id = :id
+    EOM;
+
+    $stmt = $dbh->prepare($sql);
+    $stmt->bindValue(':type', $type, PDO::PARAM_STR);
+    $stmt->bindValue(':id', $job_id, PDO::PARAM_STR);
     $stmt->execute();
 }
 
