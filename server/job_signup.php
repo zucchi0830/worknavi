@@ -14,8 +14,8 @@ $current_user = $_SESSION['current_user'];
 // 変数の初期化
 $status = 1;
 $type =
-$address_prefectures =
-$address_detail =
+$j_address_prefectures =
+$j_address_detail =
 $employment =
 $station =
 $smoke =
@@ -26,8 +26,8 @@ $experience =
 $qualification =
 $salary =
 $allowance =
-$allowance_limit =
-$insurances =
+$allowance_limit ='';
+$insurances = [];
 $childcare_leave =
 $work_hours =
 $break_time =
@@ -59,8 +59,8 @@ $sel_commute = ['可(駐車場有)', '可(駐車場無)', 'バイク可', '不�
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $type = filter_input(INPUT_POST, 'type');
-    $address_prefectures = filter_input(INPUT_POST, 'address_prefectures');
-    $address_detail = filter_input(INPUT_POST, 'address_detail');
+    $j_address_prefectures = filter_input(INPUT_POST, 'j_address_prefectures');
+    $j_address_detail = filter_input(INPUT_POST, 'j_address_detail');
     $employment = filter_input(INPUT_POST, 'employment');
     $station = filter_input(INPUT_POST, 'station');
     $smoke = filter_input(INPUT_POST, 'smoke');
@@ -72,7 +72,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $salary = filter_input(INPUT_POST, 'salary');
     $allowance = filter_input(INPUT_POST, 'allowance');
     $allowance_limit = filter_input(INPUT_POST, 'allowance_limit');
-    $insurances = filter_input(INPUT_POST, 'insurances');
+    $insurances[] = filter_input(INPUT_POST, 'insurances');
     $childcare_leave = filter_input(INPUT_POST, 'childcare_leave');
     $work_hours = filter_input(INPUT_POST, 'work_hours');
     $break_time = filter_input(INPUT_POST, 'break_time');
@@ -93,27 +93,26 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $e_name = filter_input(INPUT_POST, 'e_name');
     $e_others = filter_input(INPUT_POST, 'e_others');
 
-    $errors = job_signup_validate(
-        $type,$address_prefectures,$address_detail,$employment,$smoke,$commute,$transfer,$academic, $salary,
-        $allowance, $insurances,$childcare_leave,$work_hours,$break_time,$holiday,$holiday_detail,
-        $retirement,$retirement_remarks,$rehire,$trial_period,$trial_period_span,
-        $trial_period_conditions,$trial_period_conditions_detail,$description,
-        $e_tel,$e_tel_time,$e_email,$e_name);
+$errors = job_signup_validate(
+    $type,$j_address_prefectures,$j_address_detail,$employment,$smoke,$commute,$transfer,$academic, $salary,
+    $allowance, $insurances,$childcare_leave,$work_hours,$break_time,$holiday,$holiday_detail,
+    $retirement,$retirement_remarks,$rehire,$trial_period,$trial_period_span,
+    $trial_period_conditions,$trial_period_conditions_detail,$description,
+    $e_tel,$e_tel_time,$e_email,$e_name);
 
-    // エラーがなければ登録→管理画面へ遷移
-    if (empty($errors)) {
-        insert_job($current_user['id'],$status,$type,$address_prefectures,$address_detail,$employment,$station,$smoke,$commute,$transfer,
-        $academic,$experience,$qualification,$salary,$allowance,$allowance_limit,$insurances,
-        $childcare_leave,$work_hours,$break_time,$holiday,$holiday_detail,
-        $retirement,$retirement_remarks,$rehire,$trial_period,$trial_period_span,
-        $trial_period_conditions,$trial_period_conditions_detail,$description,
-        $e_tel,$e_tel_time,$e_email,$e_name,$e_others);
-        header('Location: management.php');
-        exit;
+// エラーがなければ登録→管理画面へ遷移
+if (empty($errors)) {
+    insert_job($current_user['id'],$status,$type,$j_address_prefectures,$j_address_detail,$employment,$station,$smoke,$commute,$transfer,
+    $academic,$experience,$qualification,$salary,$allowance,$allowance_limit,$insurances,
+    $childcare_leave,$work_hours,$break_time,$holiday,$holiday_detail,
+    $retirement,$retirement_remarks,$rehire,$trial_period,$trial_period_span,
+    $trial_period_conditions,$trial_period_conditions_detail,$description,
+    $e_tel,$e_tel_time,$e_email,$e_name,$e_others);
+    header('Location: management.php');
+    exit;
     }
 }
-// var_dump($address_prefectures,$employment,$smoke,$commute,$transfer,$insurances);
-var_dump($type);
+var_dump($insurances);
 ?>
 
 <!DOCTYPE html>
@@ -139,21 +138,21 @@ var_dump($type);
             <label class="type_label signup_label" for="type">募集する職種<span class="asterisk">*</span></label>
             <input type="text" name="type" id="type" placeholder="職種名(1つまで)" value="<?= h($type) ?>">
 
-            <label class="address_prefectures_label signup_label" for="address_prefectures">勤務地 都道府県<span class="asterisk">*</span></label>
-            <select name="address_prefectures" id="address_prefectures">
-                <?php foreach ($sel_address_prefectures as $address_prefectures_value) : ?>
-                    <?php if ($address_prefectures_value === $address_prefectures) : ?>
+            <label class="j_address_prefectures_label signup_label" for="j_address_prefectures">勤務地 都道府県<span class="asterisk">*</span></label>
+            <select name="j_address_prefectures" id="j_address_prefectures">
+                <?php foreach ($sel_address_prefectures as $j_address_prefectures_value) : ?>
+                    <?php if ($j_address_prefectures_value === $j_address_prefectures) : ?>
                         <!-- ① POST データが存在する場合はこちらの分岐に入る -->
-                        <?= "<option value='$address_prefectures_value' selected>" . $address_prefectures_value . "</option>"; ?>
+                        <?= "<option value='$j_address_prefectures_value' selected>" . $j_address_prefectures_value . "</option>"; ?>
                     <?php else : ?>
                         <!-- ② POST データが存在しない場合はこちらの分岐に入る -->
-                        <?= "<option value='$address_prefectures_value'>" . $address_prefectures_value . "</option>"; ?>
+                        <?= "<option value='$j_address_prefectures_value'>" . $j_address_prefectures_value . "</option>"; ?>
                     <?php endif; ?>
                 <?php endforeach; ?>
             </select>
 
-            <label class="address_detail_label signup_label" for="address_detail">勤務地 市区町村番地 建物名<span class="asterisk">*</span></label>
-            <input type="text" name="address_detail" id="address_detail" placeholder="建物名まで" value="<?= h($address_detail) ?>">
+            <label class="j_address_detail_label signup_label" for="j_address_detail">勤務地 市区町村番地 建物名<span class="asterisk">*</span></label>
+            <input type="text" name="j_address_detail" id="j_address_detail" placeholder="建物名まで" value="<?= h($j_address_detail) ?>">
 
             <label class="employment_label signup_label" for="employment">雇用形態<span class="asterisk">*</span></label>
             <select name="employment" id="employment">
@@ -231,15 +230,15 @@ var_dump($type);
             <input type="checkbox" name="insurances" value="健康保険"> 健康保険
             <input type="checkbox" name="insurances" value="厚生年金"> 厚生年金
             <!-- 値が飛ばない・値が残らない -->
-            <!-- <?php foreach ($sel_insurances as $insurances_value) : ?>
+            <?php foreach ($sel_insurances as $insurances_value) : ?>
                 <?php if ($insurances_value === $sel_insurances) : ?>
-                    ① POST データが存在する場合はこちらの分岐に入る
+                    <!-- ① POST データが存在する場合はこちらの分岐に入る -->
                     <?= "<input type='checkbox' name='insurances' value='$insurances_value' checked>" . $insurances_value ?>
                 <?php else : ?>
-                    ② POST データが存在しない場合はこちらの分岐に入る
+                    <!-- ② POST データが存在しない場合はこちらの分岐に入る -->
                     <?= "<input type='checkbox' name='insurances' value='$insurances_value'>" . $insurances_value ?>
                 <?php endif; ?>
-            <?php endforeach; ?> -->
+            <?php endforeach; ?>
 
             <label class="childcare_leave_label  signup_label" for="childcare_leave">育休の取得実績<span class="asterisk">*</span></label>
             <input type="radio" name="childcare_leave" value="有"> 有

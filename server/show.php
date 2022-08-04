@@ -21,7 +21,7 @@ $job_id = filter_input(INPUT_GET, 'job_id');
 
 
 // idを基にデータを取得
-$job = find_job($job_id);
+$job = find_com_job($job_id);
 
 ?>
 <!DOCTYPE html>
@@ -32,7 +32,7 @@ $job = find_job($job_id);
     <?php include_once __DIR__ . '/_header.php' ?>
 
     <section class="management_content wrapper">
-        <h1 class="signup_title"><?= h($job['type']) ?>の求人情報です</h1>
+        <h1 class="signup_title"><?= h($job['name']) , "  " . h($job['type']) ?>の求人情報です</h1>
         <table class="management_table">
             <tr>
                 <th>職種</th>
@@ -40,11 +40,11 @@ $job = find_job($job_id);
             </tr>
             <tr>
                 <th>勤務地 都道府県</th>
-                <th><?= h($job['address_prefectures']) ?></th>
+                <th><?= h($job['j_address_prefectures']) ?></th>
             </tr>
             <tr>
                 <th>勤務地 市区町村</th>
-                <th><?= h($job['address_detail']) ?></th>
+                <th><?= h($job['j_address_detail']) ?></th>
             </tr>
             <tr>
                 <th>雇用形態</th>
@@ -176,24 +176,24 @@ $job = find_job($job_id);
             </tr>
         </table>
         <div class="button_area">
-            <a href="index.php" class="search_button" class="nav-link">他の求人を見る</a>
+            <a href="index.php" class="search_button" class="nav-link">ここにアフィリエイト ここにアフィリエイト</a>
         </div>
 
-        <!-- <h1 class="signup_title">会社情報</h1>
+        <h1 class="signup_title">会社情報</h1>
         <table class="management_table">
             <tr>
-                <th>会社名</th><th><//?= h($job['name']) ?></th>
+                <th>会社名</th><th><?= h($job['name']) ?></th>
             </tr>
             <tr>
-                <th>本社住所</th><th><//?= h($job['address_prefectures']['address_detail']) ?></th>
+                <th>本社住所</th><th><?= h($job['address_prefectures'] . $job['address_detail']) ?></th>
             </tr>
             <tr>
-                <th>HP URL</th><th><//?= h($job['homepage']) ?></th>
+                <th>HP URL</th><th><?= h($job['homepage']) ?></th>
             </tr>
         </table>
             <div class="button_area">
                 <a href="index.php" class="search_button" class="nav-link">他の求人を見る</a>
-            </div> -->
+            </div>
 
         <div class="content">
             <?php if (!empty($current_user) && $current_user['id'] == $job['company_id']) : ?>

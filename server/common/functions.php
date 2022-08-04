@@ -233,8 +233,8 @@ function insert_job(
     $company_id,
     $status,
     $type,
-    $address_prefectures,
-    $address_detail,
+    $j_address_prefectures,
+    $j_address_detail,
     $employment,
     $station,
     $smoke,
@@ -271,14 +271,14 @@ function insert_job(
     $sql = <<<EOM
     INSERT INTO
         jobs
-        (company_id, status, type, address_prefectures, address_detail, employment, station, smoke, commute, transfer,
+        (company_id, status, type, j_address_prefectures, j_address_detail, employment, station, smoke, commute, transfer,
         academic, experience, qualification, salary, allowance, allowance_limit, insurances,
         childcare_leave, work_hours, break_time, holiday, holiday_detail,
         retirement, retirement_remarks, rehire, trial_period, trial_period_span,
         trial_period_conditions, trial_period_conditions_detail, description,
         e_tel, e_tel_time, e_email, e_name, e_others)
     VALUES
-        (:company_id, :status, :type, :address_prefectures, :address_detail, :employment, :station, :smoke, :commute, :transfer,
+        (:company_id, :status, :type, :j_address_prefectures, :j_address_detail, :employment, :station, :smoke, :commute, :transfer,
         :academic, :experience, :qualification, :salary, :allowance, :allowance_limit, :insurances,
         :childcare_leave, :work_hours, :break_time, :holiday, :holiday_detail,
         :retirement, :retirement_remarks, :rehire, :trial_period, :trial_period_span,
@@ -290,8 +290,8 @@ function insert_job(
     $stmt->bindValue(':company_id', $company_id, PDO::PARAM_STR);
     $stmt->bindValue(':status', $status, PDO::PARAM_STR);
     $stmt->bindValue(':type', $type, PDO::PARAM_STR);
-    $stmt->bindValue(':address_prefectures', $address_prefectures, PDO::PARAM_STR);
-    $stmt->bindValue(':address_detail', $address_detail, PDO::PARAM_STR);
+    $stmt->bindValue(':j_address_prefectures', $j_address_prefectures, PDO::PARAM_STR);
+    $stmt->bindValue(':j_address_detail', $j_address_detail, PDO::PARAM_STR);
     $stmt->bindValue(':employment', $employment, PDO::PARAM_STR);
     $stmt->bindValue(':station', $station, PDO::PARAM_STR);
     $stmt->bindValue(':smoke', $smoke, PDO::PARAM_STR);
@@ -329,8 +329,8 @@ function insert_job(
 // 求人掲載用のエラーメッセージ表示(バリデーション)
 function job_signup_validate(
     $type,
-    $address_prefectures,
-    $address_detail,
+    $j_address_prefectures,
+    $j_address_detail,
     $employment,
     $smoke,
     $commute,
@@ -363,11 +363,11 @@ function job_signup_validate(
         $errors[] = MSG_TYPE_REQUIRED;
     }
 
-    if ($address_prefectures == '都道府県を選択してください') { //都道府県
+    if ($j_address_prefectures == '都道府県を選択してください') { //都道府県
         $errors[] = MSG_ADDRESS_PREFECTURES_REQUIRED;
     }
 
-    if (empty($address_detail)) { //市区町村以降
+    if (empty($j_address_detail)) { //市区町村以降
         $errors[] = MSG_ADDRESS_DETAIL_REQUIRED;
     }
 
@@ -473,30 +473,36 @@ function job_signup_validate(
     return $errors;
 }
 
-// 求人情報を全て取得(index)
-function find_jobs_all()
+// 求人情報と会社情報を全て取得(紐づけはcompany.id: jobs.company_id)
+function find_com_job_all()
 {
     $dbh = connect_db();
 
-    $sql = 'SELECT * FROM jobs';
+    $sql = <<<EOM
+    SELECT * 
+    FROM companys 
+    INNER JOIN jobs
+    ON companys.id = jobs.company_id;
+    EOM;
+    
     $stmt = $dbh->prepare($sql);
     $stmt->execute();
 
     return $stmt->fetchAll(PDO::FETCH_ASSOC);
 }
 
-// 求人情報のidをもとに取得(show)
-function find_job($id)
+// 求人情報のidをもとに求人と会社情報を取得(show.php)
+function find_com_job($id)
 {
     $dbh = connect_db();
 
     $sql = <<<EOM
-    SELECT 
-        * 
-    FROM 
-        jobs
-    WHERE 
-        id = :id;
+    SELECT * 
+    FROM companys 
+    INNER JOIN jobs
+    ON companys.id = jobs.company_id;
+    WHERE id=:id;
+
     EOM;
     
     $stmt = $dbh->prepare($sql);
@@ -505,6 +511,47 @@ function find_job($id)
 
     return $stmt->fetch(PDO::FETCH_ASSOC);
 }
+
+// 求人情報のcompany_idをもとに会社名を取得(index.php)
+// function find_jobs_company_name($company_id)
+// {
+//     $dbh = connect_db();
+
+//     $sql = <<<EOM
+//     SELECT
+//         *
+//     FROM
+//         companys
+//     WHERE
+//         id = :id;
+//     EOM;
+
+//     $stmt = $dbh->prepare($sql);
+//     $stmt->bindValue(':id', $company_id, PDO::PARAM_STR);
+//     $stmt->execute();
+
+//     return $stmt->fetch(PDO::FETCH_ASSOC);
+// }
+
+// function find_jobs_company_name($company_id)
+// {
+//     $dbh = connect_db();
+
+//     $sql = <<<EOM
+//     SELECT 
+//         * 
+//     FROM 
+//         companys
+//     WHERE 
+//         id = :id;
+//     EOM;
+    
+//     $stmt = $dbh->prepare($sql);
+//     $stmt->bindValue(':id', $company_id, PDO::PARAM_INT);
+//     $stmt->execute();
+
+//     return $stmt->fetch(PDO::FETCH_ASSOC);
+// }
 
 // 会社情報を全て取得(index)
 function find_companys_all()

@@ -1,7 +1,14 @@
 <?php 
-    // セッション開始
-    session_start();
-    ?>
+// 関数ファイルを読み込む
+require_once __DIR__ . '/common/functions.php';
+
+// セッション開始
+session_start();
+
+// idを基にデータを取得
+$jobs = find_com_job_all();
+
+?>
 
 <!DOCTYPE html>
 <html lang="ja">
@@ -23,20 +30,20 @@
             </div>
         <table class="management_table">
             <tr>
-                <th>募集職種</th><th>勤務地</th><th>仕事内容</th><th>掲載ステータス</th><th>編集</th>
+                <th>会社名</th><th>募集職種</th><th>勤務地</th><th>仕事内容</th><th>掲載ステータス</th><th>編集</th>
             </tr>
+        <?php foreach ($jobs as $job) : ?>
+                <div class="jobtitle">
+                <!-- <h1 class="index_job_title">会社名:<?=  $company["name"] ?></h1> -->
+
             <tr>
-                <th>事務員</th><th>八戸市◯◯</th><th>PCの打ち込み、営業受付</th><th><a href="">掲載中</a></th>
+                <th><?=  $job['name'] ?></th><th><?=  $job['type'] ?></th><th><?=  $job['j_address_prefectures']. $job['j_address_detail']?></th>
+                <th><?=  $job['description']?></th><th><a class="signup_button" href="show.php?job_id=<?= h($job['id']) ?>">掲載中</a></th>
                 <th>編集する<br>一時停止<br>削除</th>
             </tr>
-            <tr>
-                <th>事務員</th><th>八戸市◯◯</th><th>PCの打ち込み、営業受付</th><th><a href="">掲載中</a></th>
-                <th>編集する<br>一時停止<br>削除</th>
-            </tr>
-            <tr>
-                <th>事務員</th><th>八戸市◯◯</th><th>PCの打ち込み、営業受付</th><th><a href="">掲載中</a></th>
-                <th>編集する<br>一時停止<br>削除</th>
-            </tr>
+
+        </div>
+        <?php endforeach; ?>
         </table>
             <div class="button_area">
                 <a href="job_signup.php" class="signup_button" class="nav-link">求人を掲載する</a>

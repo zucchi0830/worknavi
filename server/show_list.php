@@ -12,7 +12,7 @@ $name = '';
 $sel_address_prefectures = ['都道府県を選択してください', '青森県', '秋田県', '岩手県', '山形県', '宮城県', '福島県'];
 $sel_employment = ['雇用形態を選択してください', '正社員', '契約社員', 'パートアルバイト', 'その他'];
 
-$jobs = find_jobs_all();
+$jobs = find_com_job_all();
 
 ?>
 
@@ -33,7 +33,7 @@ $jobs = find_jobs_all();
                 <ul>
                     <li></li>
                     <li>職種:<?=  $job['type'] ?></li>
-                    <li>勤務地:<?=  $job['address_prefectures']?></li>
+                    <li>勤務地:<?=  $job['j_address_prefectures']?></li>
                     <li>雇用形態:<?=  $job['employment'] ?></li>
                     <li>給与:<?=  $job['salary'] ?></li>
                     <li>勤務時間:<?=  $job['work_hours'] ?></li>

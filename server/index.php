@@ -9,12 +9,15 @@ $dbh = connect_db();
 
 // 変数の初期化
 $name = '';
+$company_id = '';
 $sel_address_prefectures = ['都道府県を選択してください', '青森県', '秋田県', '岩手県', '山形県', '宮城県', '福島県'];
 $sel_employment = ['雇用形態を選択してください', '正社員', '契約社員', 'パートアルバイト', 'その他'];
 
-$jobs = find_jobs_all();
-// $companys = find_companys_all();
+$companys_jobs = find_com_job_all();
 ?>
+
+<!-- jobs>company_idを持ってきて、それをもとに、companytableを検索する
+その結果を持ってきて、会社情報を出す -->
 
 <!DOCTYPE html>
 <html lang="ja">
@@ -64,14 +67,14 @@ $jobs = find_jobs_all();
     <div class="sub_title">
         <h1>最新の求人</h1>
         <div class="jobs job1">
-        <?php foreach ($jobs as $job) : ?>
+        <?php foreach ($companys_jobs as $job) : ?>
                 <div class="jobtitle">
-                <!-- <h1 class="index_job_title">会社名:<?=  $company["name"] ?></h1> -->
 
+                <h1 class="index_job_title">会社名:<?= $job['name'] ?></h1>                
                 <ul>
                     <li></li>
                     <li>職種:<?=  $job['type'] ?></li>
-                    <li>勤務地:<?=  $job['address_prefectures']?></li>
+                    <li>勤務地:<?=  $job['j_address_prefectures']?></li>
                     <li>雇用形態:<?=  $job['employment'] ?></li>
                     <li>給与:<?=  $job['salary'] ?></li>
                     <li>勤務時間:<?=  $job['work_hours'] ?></li>
