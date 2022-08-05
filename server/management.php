@@ -30,10 +30,10 @@ $jobs = find_com_job_all();
         </div>
         <table class="management_table">
             <tr>
-                <th class="th_company th1">会社名</th>
-                <th class="th_type th2">募集職種</th>
-                <th class="th_address th3">勤務地</th>
-                <th class="th_description th4">仕事内容</th>
+                <th class="th_type th1">職種名</th>
+                <th class="th_address th2">勤務地</th>
+                <th class="th_created th3">作成日</th>
+                <th class="th_view th4">閲覧数</th>
                 <th class="th_status th5">掲載ステータス</th>
                 <th class="th_edit th6">編集</th>
             </tr>
@@ -41,24 +41,24 @@ $jobs = find_com_job_all();
                 <?php if ($job['company_id'] == $current_user['id']) : ?>
                     <div class="jobtitle">
                         <tr>
-                            <th><?= $job['company_id'] . $job['name'] ?></th>
-                            <th><?= $job['type'] ?></th>
+                            <th><?= $job['type'] . $job['name'] ?></th>
                             <th><?= $job['j_address_prefectures'] . $job['j_address_detail'] ?></th>
-                            <th><?= $job['description'] ?></th>
+                            <th><?= $job['created_at'] ?></th>
+                            <th><?= "300" ?></th>
                             <th>
                             <?php if ($job['status'] == true) : ?>
-                                <a class="status_start_now_button" href="show.php?job_id=<?= h($job['id']) ?>">掲載中</a>
+                                <a class="status_on_now_button" href="show.php?job_id=<?= h($job['id']) ?>">掲載中</a>
                             <?php elseif($job['status'] == false) : ?>
-                                <a class="status_stop_now_button" href="show.php?job_id=<?= h($job['id']) ?>">掲載停止中</a> 
+                                <a class="status_off_now_button" href="show.php?job_id=<?= h($job['id']) ?>">掲載停止中</a> 
                             <?php endif; ?>
                                 </th>
                                 <th><a href="edit.php?job_id=<?= h($job['id']) ?>">編集する</a>
                             <?php if ($job['status'] == true) : ?>
-                                <button class="status_stop_button" onclick="if (!confirm('掲載を停止してよろしいですか？')) {return false}; 
-                                location.href='status_stop.php?job_id=<?= h($job['id']) ?>'">掲載停止</button>
+                                <br><button class="status_off_button" onclick="if (!confirm('掲載を停止してよろしいですか？')) {return false}; 
+                                location.href='status_off.php?job_id=<?= h($job['id']) ?>'">掲載停止</button>
                             <?php elseif($job['status'] == false) : ?>
-                                <br><button class="status_start_button" onclick="if (!confirm('求人を掲載してよろしいですか？')) {return false}; 
-                                location.href='status_start.php?job_id=<?= h($job['id']) ?>'">掲載開始</button>
+                                <br><button class="status_on_button" onclick="if (!confirm('求人を掲載してよろしいですか？')) {return false}; 
+                                location.href='status_on.php?job_id=<?= h($job['id']) ?>'">掲載開始</button>
                             <?php endif; ?>
                                 <br><button class="delete_button" onclick="if (!confirm('本当に削除してよろしいですか？')) {return false}; 
                                 location.href='delete.php?job_id=<?= h($job['id']) ?>'">削除</button>

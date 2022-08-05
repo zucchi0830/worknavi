@@ -309,8 +309,19 @@ p {
     display: block
 }
 
-.th_type {
+.th_view{
+    width:6%
+}
+.th_created {
+    width: 10%;
+}
+.th_address,
+.th_edit {
     width: 15%;
+}
+
+.th_type {
+    width: 20%;
 }
 
 .th_status {
@@ -318,17 +329,7 @@ p {
     padding: 5px;
 }
 
-.th_description {
-    width: 40%;
-}
-
-.th_company,
-.th_edit,
-.th_address {
-    width: 10%;
-}
-
-.status_stop_now_button {
+.status_off_now_button {
     background: #999;
     padding: 5%;
     width: 80%;
@@ -337,7 +338,7 @@ p {
     border-radius: 30px;
 }
 
-.status_start_now_button {
+.status_on_now_button {
     background: #f90;
     padding: 5%;
     width: 80%;

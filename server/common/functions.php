@@ -489,74 +489,7 @@ function job_signup_validate(
     return $errors;
 }
 
-// 求人情報と会社情報を全て取得(紐づけはcompany.id: jobs.company_id)
-function find_com_job_all()
-{
-    $dbh = connect_db();
-
-    $sql = <<<EOM
-    SELECT * 
-    FROM companys 
-    INNER JOIN jobs
-    ON companys.id = jobs.company_id
-    ORDER BY jobs.created_at DESC
-    EOM;
-
-    $stmt = $dbh->prepare($sql);
-    $stmt->execute();
-
-    return $stmt->fetchAll(PDO::FETCH_ASSOC);
-}
-
-// 求人情報のidをもとに求人と会社情報を取得(show.php)
-function find_com_job($id)
-{
-    $dbh = connect_db();
-
-    $sql = <<<EOM
-    SELECT * 
-    FROM companys 
-    INNER JOIN jobs
-    ON companys.id = jobs.company_id
-    WHERE jobs.id=:id
-    ORDER BY jobs.created_at DESC
-
-    EOM;
-
-    $stmt = $dbh->prepare($sql);
-    $stmt->bindValue(':id', $id, PDO::PARAM_INT);
-    $stmt->execute();
-
-    return $stmt->fetch(PDO::FETCH_ASSOC);
-}
-
-// 求人編集・更新機能
-function update_photo($id, $description)
-{
-    $dbh = connect_db();
-
-    $sql = <<<EOM
-    UPDATE
-        jobs
-    SET
-        description = :description
-    WHERE 
-        id = :id
-    EOM;
-
-    $stmt = $dbh->prepare($sql);
-    $stmt->bindValue(':description', $description, PDO::PARAM_STR);
-
-    if (!empty($image_name)) {
-        $stmt->bindValue(':image', $image_name, PDO::PARAM_STR);
-    }
-
-    $stmt->bindValue(':id', $id, PDO::PARAM_INT);
-    $stmt->execute();
-}
-
-
-//求人の一括編集・更新機能 控え
+//求人の一括編集・更新機能
 function update_job_all(
     $job_id,
     $type,
@@ -707,7 +640,7 @@ function delete_job($id)
 }
 
 // 求人掲載ステータス → 一時停止
-function status_stop($job_id)
+function status_off($job_id)
 {
 $dbh = connect_db();
 
@@ -721,13 +654,12 @@ $dbh = connect_db();
     EOM;
 
     $stmt = $dbh->prepare($sql);
-    // $stmt->bindValue(':status', $status, PDO::PARAM_STR);
     $stmt->bindValue(':id', $job_id, PDO::PARAM_STR);
     $stmt->execute();
 }
 
-
-function status_start($job_id)
+// 求人掲載ステータス → 掲載中
+function status_on($job_id)
 {
 $dbh = connect_db();
 
@@ -741,12 +673,56 @@ $dbh = connect_db();
     EOM;
 
     $stmt = $dbh->prepare($sql);
-    // $stmt->bindValue(':status', $status, PDO::PARAM_STR);
     $stmt->bindValue(':id', $job_id, PDO::PARAM_STR);
     $stmt->execute();
 }
 
-// 求人情報と会社情報を直近から3件取得(紐づけはcompany.id: jobs.company_id)
+///////////////////////
+// ここから求人情報取得//
+///////////////////////
+
+// 求人情報と会社情報を全て取得(紐づけはcompany.id: jobs.company_id)
+function find_com_job_all()
+{
+    $dbh = connect_db();
+
+    $sql = <<<EOM
+    SELECT * 
+    FROM companys 
+    INNER JOIN jobs
+    ON companys.id = jobs.company_id
+    ORDER BY jobs.created_at DESC
+    EOM;
+
+    $stmt = $dbh->prepare($sql);
+    $stmt->execute();
+
+    return $stmt->fetchAll(PDO::FETCH_ASSOC);
+}
+
+// 求人情報のidをもとに求人と会社情報を取得(show.php)
+function find_com_job($id)
+{
+    $dbh = connect_db();
+
+    $sql = <<<EOM
+    SELECT * 
+    FROM companys 
+    INNER JOIN jobs
+    ON companys.id = jobs.company_id
+    WHERE jobs.id=:id
+    ORDER BY jobs.created_at DESC
+
+    EOM;
+
+    $stmt = $dbh->prepare($sql);
+    $stmt->bindValue(':id', $id, PDO::PARAM_INT);
+    $stmt->execute();
+
+    return $stmt->fetch(PDO::FETCH_ASSOC);
+}
+
+// 求人情報と会社情報を直近から3件取得(status:trueのみ)
 function find_com_job_last3()
 {
     $dbh = connect_db();
@@ -756,6 +732,7 @@ function find_com_job_last3()
     FROM companys 
     INNER JOIN jobs
     ON companys.id = jobs.company_id
+    WHERE status = true
     ORDER BY jobs.created_at DESC
     LIMIT 3
     EOM;
@@ -766,7 +743,7 @@ function find_com_job_last3()
     return $stmt->fetchAll(PDO::FETCH_ASSOC);
 }
 
-// 求人情報と会社情報を10件取得(紐づけはcompany.id: jobs.company_id)
+// 求人情報と会社情報を$start~10件取得(status:trueのみ)
 function find_com_job_last10($start)
 {
     $dbh = connect_db();
@@ -776,6 +753,7 @@ function find_com_job_last10($start)
     FROM companys
     INNER JOIN jobs
     ON companys.id = jobs.company_id
+    WHERE status = true
     ORDER BY jobs.created_at DESC
     LIMIT ?,10
     EOM;
@@ -785,4 +763,47 @@ function find_com_job_last10($start)
     $stmt->execute();
 
     return $stmt->fetchAll(PDO::FETCH_ASSOC);
+}
+
+// 求人情報と会社情報を全て取得(status:trueのみ)
+function find_job_all_status_true()
+{
+    $dbh = connect_db();
+
+    $sql = <<<EOM
+    SELECT COUNT(*)
+    FROM jobs 
+    WHERE status = true
+    EOM;
+
+    $stmt = $dbh->prepare($sql);
+    $stmt->execute();
+
+    return $stmt->fetch(PDO::FETCH_ASSOC);
+}
+
+// 求人検索機能
+function search_com_job($keyword)
+{
+    // データベースに接続
+    $dbh = connect_db();
+
+    // SQL文の組み立て
+    $sql = 'SELECT * FROM jobs WHERE description LIKE :kuzu';
+    $keyword_param = '%' . $keyword . '%';
+
+    // プリペアドステートメントの準備
+    // $dbh->query($sql) でも良い
+    $stmt = $dbh->prepare($sql);
+
+    // パラメータのバインド
+    $stmt->bindValue(':kuzu', $keyword_param, PDO::PARAM_STR);
+
+    // プリペアドステートメントの実行
+    $stmt->execute();
+
+    // 結果の受け取り
+    $search_result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    // return $keyword_param;
+    return $search_result;
 }

@@ -18,7 +18,7 @@ if (empty($_SESSION['current_user']) ||
 $job_id = filter_input(INPUT_GET, 'job_id');
 $job = find_com_job($job_id);
 
-status_stop($job_id);
+status_off($job_id);
 header('Location: management.php');
 exit;
 

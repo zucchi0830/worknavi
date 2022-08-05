@@ -7,8 +7,8 @@ session_start();
 $current_user = '';
 
 // パラメータが渡されていなければ一覧画面に戻す
-$page_id = filter_input(INPUT_GET,'page_id');
-if (empty($page_id)) {
+$page = filter_input(INPUT_GET,'page');
+if (empty($page)) {
     header('Location: index.php');
     exit;
 }
@@ -17,8 +17,7 @@ if (isset($_SESSION['current_user'])) {
     $current_user = $_SESSION['current_user'];
 }
 
-$page = $_REQUEST['page_id'];
-$start = 10 * ($page-1);
+$start = 10 * ($page - 1);
 
 // 変数の初期化
 $name = '';
@@ -26,6 +25,8 @@ $sel_address_prefectures = ['都道府県を選択してください', '青森�
 $sel_employment = ['雇用形態を選択してください', '正社員', '契約社員', 'パートアルバイト', 'その他'];
 
 $companys_jobs = find_com_job_last10($start);
+$job_count = find_job_all_status_true();
+
 ?>
 
 <!DOCTYPE html>
@@ -37,7 +38,8 @@ $companys_jobs = find_com_job_last10($start);
     <?php include_once __DIR__ . '/_header.php' ?>
 
     <div class="sub_title">
-        <h1>最新の求人(10件)</h1>
+        <h1>求人情報一覧 </h1>
+        <p><?= "該当求人は" . $job_count['COUNT(*)'] . "件です" ?></p>
         <div class="jobs job1">
         <?php foreach ($companys_jobs as $job) : ?>
         <?= "求人id" . var_dump($job['id'] ); ?>
@@ -61,11 +63,14 @@ $companys_jobs = find_com_job_last10($start);
         <!-- <//?php endif; ?> -->
         <?php endforeach; ?>
     </div>
+    <?= "<pre>" ?>
+    <?= "</pre>" ?>
         <?php if ($page > 1 ) : ?>
-            <a class="detail_button" href="show_list.php?page_id=<?= h($page - 1) ?>"> <前の10件 </a>
-        <?php endif; ?>    
-            <a class="detail_button" href="show_list.php?page_id=<?= h($page + 1) ?>">次の10件></a>
-        
+            <a class="detail_button" href="show_list.php?page=<?= h($page - 1) ?>"> <前の10件 </a>
+        <?= h($page) ?>
+        <?php elseif ($job_count['COUNT(*)'] - (intval($page)*10) < 10 ) : ?>
+            <a class="detail_button" href="show_list.php?page=<?= h($page + 1) ?>">次の10件></a>
+        <?php endif; ?>
     <?php include_once __DIR__ . '/_footer.php' ?>
 
 </body>

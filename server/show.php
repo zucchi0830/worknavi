@@ -19,6 +19,10 @@ if (isset($_SESSION['current_user'])) {
 
 // idを基にデータを取得
 $job = find_com_job($job_id);
+if ($job['status'] == false && $current_user['id'] != $job['company_id'] ) {
+    header('Location: index.php');
+    exit;
+}
 ?>
 
 <!DOCTYPE html>
@@ -202,10 +206,10 @@ $job = find_com_job($job_id);
                         location.href='delete.php?job_id=<?= h($job['id']) ?>'">削除</button>
                 </div><br>
                 掲載ステータス:
-                <?php if ($job['status'] == true) : ?>掲載中<button class="status_stop_button" onclick="if (!confirm('掲載を停止してよろしいですか？')) {return false}; 
-                                location.href='status_stop.php?job_id=<?= h($job['id']) ?>'"><u>(掲載停止する)</u>
-                <?php elseif($job['status'] == false) : ?>掲載停止中 <button class="status_start_button" onclick="if (!confirm('求人を掲載してよろしいですか？')) {return false}; 
-                location.href='status_start.php?job_id=<?= h($job['id']) ?>'"><u>(掲載開始する)</u>
+                <?php if ($job['status'] == true) : ?>掲載中<button class="status_off_button" onclick="if (!confirm('掲載を停止してよろしいですか？')) {return false}; 
+                                location.href='status_off.php?job_id=<?= h($job['id']) ?>'"><u>(掲載停止する)</u>
+                <?php elseif($job['status'] == false) : ?>掲載停止中 <button class="status_on_button" onclick="if (!confirm('求人を掲載してよろしいですか？')) {return false}; 
+                location.href='status_on.php?job_id=<?= h($job['id']) ?>'"><u>(掲載開始する)</u>
                 <?php endif; ?>                
             </div>
             <?php endif; ?>
