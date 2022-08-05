@@ -60,13 +60,13 @@ $job = '';
 // セッションにidが保持されていなければ一覧画面にリダイレクト
 // パラメータを受け取れなければ一覧画面にリダイレクト
 if (empty($_SESSION['current_user']) || 
-    empty($_GET['job_id'])) {
+    empty($_GET['job_copy_id'])) {
     header('Location: index.php');
     exit;
 }
 $current_user = $_SESSION['current_user'];
 
-$job_id = filter_input(INPUT_GET, 'job_id');
+$job_id = filter_input(INPUT_GET, 'job_copy_id');
 $job = find_com_job($job_id);
 
 
@@ -127,51 +127,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $trial_period_conditions,$trial_period_conditions_detail,$description,
     $e_tel,$e_tel_time,$e_email,$e_name);
 
+// エラーがなければ登録→管理画面へ遷移
 if (empty($errors)) {
-        update_job_all(
-    $job_id,
-    $type,
-    $j_address_prefectures,
-    $j_address_detail,
-    $employment,
-    $station,
-    $smoke,
-    $commute,
-    $transfer,
-    $academic,
-    $experience,
-    $qualification,
-    $salary,
-    $allowance,
-    $allowance_limit,
-    $insurance1,
-    $insurance2,
-    $insurance3,
-    $insurance4,
-    $childcare_leave,
-    $work_hours,
-    $break_time,
-    $holiday,
-    $holiday_detail,
-    $retirement,
-    $retirement_remarks,
-    $rehire,
-    $trial_period,
-    $trial_period_span,
-    $trial_period_conditions,
-    $trial_period_conditions_detail,
-    $description,
-    $e_tel,
-    $e_tel_time,
-    $e_email,
-    $e_name,
-    $e_others);
-}
-
-    header('Location: show.php?job_id=' . $job_id);
+    insert_job($current_user['id'],$status,$type,$j_address_prefectures,$j_address_detail,$employment,$station,$smoke,$commute,$transfer,
+    $academic,$experience,$qualification,$salary,$allowance,$allowance_limit, $insurance1, $insurance2, $insurance3, $insurance4, 
+    $childcare_leave,$work_hours,$break_time,$holiday,$holiday_detail,
+    $retirement,$retirement_remarks,$rehire,$trial_period,$trial_period_span,
+    $trial_period_conditions,$trial_period_conditions_detail,$description,
+    $e_tel,$e_tel_time,$e_email,$e_name,$e_others);
+    header('Location: management.php');
     exit;
-
     }
+}
+    // header('Location: show.php?job_id=' . $job_id);
+
 ?>
 
 <!DOCTYPE html>
@@ -419,7 +388,7 @@ if (empty($errors)) {
 
             <div class="button_area">
 
-                <input type="submit" value="求人情報を更新する" class="signup_button">
+                <input type="submit" value="求人情報を掲載する" class="signup_button">
             </div>
         </form>
     </section>

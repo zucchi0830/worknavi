@@ -16,7 +16,6 @@ if (empty($job_id)) {
 if (isset($_SESSION['current_user'])) {
     $current_user = $_SESSION['current_user'];
 }
-// $job_id = filter_input(INPUT_GET, 'job_id');
 
 // idを基にデータを取得
 $job = find_com_job($job_id);

@@ -30,10 +30,10 @@ $salary =
 $allowance =
 $allowance_limit ='';
 // $insurances = 
-$insurance1 = 0;
-$insurance2 = 0;
-$insurance3 = 0;
-$insurance4 = 0;
+$insurance1 = 
+$insurance2 = 
+$insurance3 = 
+$insurance4 = 
 $childcare_leave =
 $work_hours =
 $break_time =
@@ -67,6 +67,7 @@ $sel_commute = ['可(駐車場有)', '可(駐車場無)', 'バイク可', '不�
 $sel_smoke =['敷地内全面禁煙','分煙室設置'];
 $sel_ornot =['有','無'];
 
+$e_email = $current_user['email'];
 $e_name = $current_user['full_name'];
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -109,7 +110,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $e_name = filter_input(INPUT_POST, 'e_name');
     $e_others = filter_input(INPUT_POST, 'e_others');
 
-$errors = job_signup_validate(
+    $errors = job_signup_validate(
     $type,$j_address_prefectures,$j_address_detail,$employment,$smoke,$commute,$transfer,$academic, $salary,
     $allowance, $allowance_limit, $insurance1, $insurance2, $insurance3, $insurance4, $childcare_leave,$work_hours,$break_time,$holiday,$holiday_detail,
     $retirement,$retirement_remarks,$rehire,$trial_period,$trial_period_span,

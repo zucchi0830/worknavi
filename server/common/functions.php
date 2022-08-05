@@ -498,7 +498,8 @@ function find_com_job_all()
     SELECT * 
     FROM companys 
     INNER JOIN jobs
-    ON companys.id = jobs.company_id;
+    ON companys.id = jobs.company_id
+    ORDER BY jobs.created_at DESC
     EOM;
 
     $stmt = $dbh->prepare($sql);
@@ -517,7 +518,8 @@ function find_com_job($id)
     FROM companys 
     INNER JOIN jobs
     ON companys.id = jobs.company_id
-    WHERE jobs.id=:id;
+    WHERE jobs.id=:id
+    ORDER BY jobs.created_at DESC
 
     EOM;
 
@@ -685,26 +687,6 @@ $dbh = connect_db();
 
     $stmt->execute();
 }
-//求人の一括編集・更新機能
-function update_job_all2($job_id,$type)
-{
-$dbh = connect_db();
-
-    $sql = <<<EOM
-    UPDATE
-        jobs
-    SET
-        type = :type
-
-    WHERE
-        id = :id
-    EOM;
-
-    $stmt = $dbh->prepare($sql);
-    $stmt->bindValue(':type', $type, PDO::PARAM_STR);
-    $stmt->bindValue(':id', $job_id, PDO::PARAM_STR);
-    $stmt->execute();
-}
 
 // 求人削除機能
 function delete_job($id)
@@ -716,7 +698,7 @@ function delete_job($id)
         FROM 
     jobs 
         WHERE 
-    id = :id;
+    id = :id
     EOM;
 
     $stmt = $dbh->prepare($sql);
@@ -762,4 +744,45 @@ $dbh = connect_db();
     // $stmt->bindValue(':status', $status, PDO::PARAM_STR);
     $stmt->bindValue(':id', $job_id, PDO::PARAM_STR);
     $stmt->execute();
+}
+
+// 求人情報と会社情報を直近から3件取得(紐づけはcompany.id: jobs.company_id)
+function find_com_job_last3()
+{
+    $dbh = connect_db();
+
+    $sql = <<<EOM
+    SELECT * 
+    FROM companys 
+    INNER JOIN jobs
+    ON companys.id = jobs.company_id
+    ORDER BY jobs.created_at DESC
+    LIMIT 3
+    EOM;
+
+    $stmt = $dbh->prepare($sql);
+    $stmt->execute();
+
+    return $stmt->fetchAll(PDO::FETCH_ASSOC);
+}
+
+// 求人情報と会社情報を10件取得(紐づけはcompany.id: jobs.company_id)
+function find_com_job_last10($start)
+{
+    $dbh = connect_db();
+
+    $sql = <<<EOM
+    SELECT *
+    FROM companys
+    INNER JOIN jobs
+    ON companys.id = jobs.company_id
+    ORDER BY jobs.created_at DESC
+    LIMIT ?,10
+    EOM;
+
+    $stmt = $dbh->prepare($sql);
+    $stmt->bindParam(1, $start, PDO::PARAM_INT);
+    $stmt->execute();
+
+    return $stmt->fetchAll(PDO::FETCH_ASSOC);
 }

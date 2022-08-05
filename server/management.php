@@ -54,14 +54,16 @@ $jobs = find_com_job_all();
                                 </th>
                                 <th><a href="edit.php?job_id=<?= h($job['id']) ?>">編集する</a>
                             <?php if ($job['status'] == true) : ?>
-                                <br><button class="status_stop_button" onclick="if (!confirm('掲載を停止してよろしいですか？')) {return false}; 
-                                location.href='status_stop.php?job_id=<?= h($job['id']) ?>'">掲載停止
+                                <button class="status_stop_button" onclick="if (!confirm('掲載を停止してよろしいですか？')) {return false}; 
+                                location.href='status_stop.php?job_id=<?= h($job['id']) ?>'">掲載停止</button>
                             <?php elseif($job['status'] == false) : ?>
                                 <br><button class="status_start_button" onclick="if (!confirm('求人を掲載してよろしいですか？')) {return false}; 
-                                location.href='status_start.php?job_id=<?= h($job['id']) ?>'">掲載開始
+                                location.href='status_start.php?job_id=<?= h($job['id']) ?>'">掲載開始</button>
                             <?php endif; ?>
                                 <br><button class="delete_button" onclick="if (!confirm('本当に削除してよろしいですか？')) {return false}; 
                                 location.href='delete.php?job_id=<?= h($job['id']) ?>'">削除</button>
+                                <br><button class="copy_button" onclick="if (!confirm('この求人をコピーしますか？')) {return false}; 
+                                location.href='job_signup_copy.php?job_copy_id=<?= h($job['id']) ?>'">コピーして求人作成</button>                                
                             </th>
                         </tr>
                     </div>

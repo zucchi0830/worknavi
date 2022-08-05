@@ -12,7 +12,7 @@ $name = '';
 $sel_address_prefectures = ['都道府県を選択してください', '青森県', '秋田県', '岩手県', '山形県', '宮城県', '福島県'];
 $sel_employment = ['雇用形態を選択してください', '正社員', '契約社員', 'パートアルバイト', 'その他'];
 
-$companys_jobs = find_com_job_all();
+$companys_jobs = find_com_job_last3();
 ?>
 
 <!DOCTYPE html>
@@ -34,7 +34,7 @@ $companys_jobs = find_com_job_all();
                         <?= "<option value='$value' selected>" . $value . "</option>"; ?>
                     <?php else : ?>
                         <!--  ② POST データが存在しない場合はこちらの分岐に入る -->
-                        <?= "<option placeholder='a' value='$value'>" . $value . "</option>"; ?>
+                        <?= "<option value='$value'>" . $value . "</option>"; ?>
                     <?php endif; ?>
                 <?php endforeach; ?>
             </select>
@@ -50,7 +50,7 @@ $companys_jobs = find_com_job_all();
                         <?= "<option value='$employment_value' selected>" . $employment_value . "</option>"; ?>
                     <?php else : ?>
                         <!--  ② POST データが存在しない場合はこちらの分岐に入る -->
-                        <?= "<option placeholder='a' value='$employment_value'>" . $employment_value . "</option>"; ?>
+                        <?= "<option value='$employment_value'>" . $employment_value . "</option>"; ?>
                     <?php endif; ?>
                 <?php endforeach; ?>
             </select>
@@ -138,7 +138,7 @@ $companys_jobs = find_com_job_all();
             </div>
         </div> -->
         <div class="detail">
-            <a class="detail_button" href="show_list.php" alt="">他の求人を見る</a>
+            <a class="detail_button" href="show_list.php?page=1">他の求人を見る</a>
         </div>
         <div class="detail">
             <a class="detail_button" href="signup.php" alt="">求人を掲載する</a>
