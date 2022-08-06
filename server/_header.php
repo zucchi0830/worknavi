@@ -1,7 +1,7 @@
     <?php 
     require_once __DIR__ . '/common/functions.php';
     // セッション開始
-    session_start();
+    // session_start();
     $current_user = '';
 
     if (isset($_SESSION['current_user'])) {

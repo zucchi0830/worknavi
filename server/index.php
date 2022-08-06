@@ -31,20 +31,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     header("Location: show_list.php?page=1" . add_url($j_address_prefectures) . type_url($type) . emp_url($employment));
     exit;
 }
-// if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-//     $type = filter_input(INPUT_POST, 'type');
-//     header("Location: show_list.php?address=" . $j_address_prefectures);
-//     exit;
-// }
-// if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-//     $employment = filter_input(INPUT_POST, 'employment');
-//     header("Location: show_list.php?address=" . $j_address_prefectures);
-//     exit;
-// }
 
-
-var_dump($type);
-var_dump($employment);
 ?>
 
 <!DOCTYPE html>

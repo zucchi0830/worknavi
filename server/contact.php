@@ -48,7 +48,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (empty($errors)) {
         insert_contact($name, $full_name, $address_prefectures, $address_detail, $homepage, 
     $tel, $email, $description);
-        header('Location: thanks.php');
+        header('Location: contact_confirm.php');
         exit;
     }
 }

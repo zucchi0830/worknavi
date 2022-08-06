@@ -74,13 +74,6 @@ th {
     background: #fff;
 }
 
-.management_table {
-    margin: 0 auto;
-    display: flex;
-    justify-content: center;
-    border: none;
-}
-
 /* ヘッダー */
 .header {
     background-color: #FF9900;
@@ -297,6 +290,16 @@ p {
     padding: 25px 50px;
 }
 
+.management_table {
+    margin: 0 auto;
+    display: flex;
+    justify-content: center;
+    border: none;
+}
+
+.p_management{
+text-align: center;}
+
 .logout_button {
     text-align: center;
     padding: 15px 0;
@@ -428,15 +431,6 @@ input[type="password"]::placeholder {
     border-radius: 30px;
 }
 
-.thanks_back_button {
-    text-align: center;
-    padding: 15px;
-    width: 85%;
-    background: #FF9900;
-    color: #000;
-    border-radius: 30px;
-    text-decoration: none;
-}
 
 .signup_button {
     text-align: center;
@@ -492,6 +486,23 @@ input[type="password"]::placeholder {
     border-radius: 30px;
     text-decoration: none;
     margin: 0 auto;
+}
+
+/* confirm.php */
+.h1_confirm{
+text-align: center;
+}
+
+.confirm_back_button {
+    display: block;
+    text-align: center;
+    padding: 15px;
+    width: 20%;
+    background: #FF9900;
+    color: #000;
+    border-radius: 30px;
+    text-decoration: none;
+    margin:0 auto;
 }
 
 /* job_signup.php */

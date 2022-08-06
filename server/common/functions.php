@@ -701,7 +701,7 @@ function find_com_job_all()
     return $stmt->fetchAll(PDO::FETCH_ASSOC);
 }
 
-// 求人情報のidをもとに求人と会社情報を取得(show.php)
+// 求人情報のidをもとに会社情報を取得(show.php)
 function find_com_job($id)
 {
     $dbh = connect_db();
@@ -712,6 +712,28 @@ function find_com_job($id)
     INNER JOIN jobs
     ON companys.id = jobs.company_id
     WHERE jobs.id=:id
+    ORDER BY jobs.created_at DESC
+
+    EOM;
+
+    $stmt = $dbh->prepare($sql);
+    $stmt->bindValue(':id', $id, PDO::PARAM_INT);
+    $stmt->execute();
+
+    return $stmt->fetch(PDO::FETCH_ASSOC);
+}
+
+// 求人情報のidをもとに求人情報を取得(show.php)
+function find_job_com($id)
+{
+    $dbh = connect_db();
+
+    $sql = <<<EOM
+    SELECT * 
+    FROM companys 
+    INNER JOIN jobs
+    ON companys.id = jobs.company_id
+    WHERE companys.id=:id
     ORDER BY jobs.created_at DESC
 
     EOM;
@@ -949,16 +971,16 @@ function search_employment_com_job_count($employment_keyword)
 // 検索>公開中の求人件数//
 ////////////////////////
 // 公開求人件数>検索結果に該当した件数(// 純粋なカウント数をここで作っておく)
-function find_job_count_true($job_count,$job_count_address,$address_keyword,$type_keyword,$employment_keyword)
+function find_job_count_true($job_count,$job_search_count,$address_keyword,$type_keyword,$employment_keyword)
 {
     if(empty($address_keyword)){ //都道府県がemptyなら公開中の求人件数が返ってくる
-    $job_count_true = $job_count;
+    $job_count_true = $job_search_count;
     } elseif (!empty($address_keyword)){ //都道府県が!emptyなら公開中>都道府県の求人件数が返ってくる
-    $job_count_true = $job_count_address;
+    $job_count_true = $job_search_count;
     } elseif (!empty($type_keyword)){ //職種が!emptyなら公開中>職種の求人件数が返ってくる
-    $job_count_true = $job_count_address;
+    $job_count_true = $job_search_count;
     } elseif (!empty($employment_keyword)){ //雇用形態が!emptyなら公開中>雇用形態の求人件数が返ってくる
-    $job_count_true = $job_count_address;
+    $job_count_true = $job_search_count;
     }
 return $job_count_true;
 }

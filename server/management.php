@@ -7,6 +7,12 @@ session_start();
 
 // idを基にデータを取得
 $jobs = find_com_job_all();
+
+if (isset($_SESSION['current_user'])) {
+    $current_user = $_SESSION['current_user'];
+}
+
+$myjob = find_job_com($current_user['id']);
 ?>
 
 <!DOCTYPE html>
@@ -28,20 +34,24 @@ $jobs = find_com_job_all();
                 </ul>
             </div>
         </div>
-        <table class="management_table">
-            <tr>
-                <th class="th_type th1">職種名</th>
-                <th class="th_address th2">勤務地</th>
-                <th class="th_created th3">作成日</th>
-                <th class="th_view th4">閲覧数</th>
-                <th class="th_status th5">掲載ステータス</th>
-                <th class="th_edit th6">編集</th>
-            </tr>
-            <?php foreach ($jobs as $job) : ?>
+            <?php if (empty($myjob['company_id'])) : ?>    
+                <p class="p_management">作成した求人がありません。</p>
+            <?php elseif(!empty($myjob['company_id'])): ?>
+            <table class="management_table">
+                <tr>
+                    <th class="th_type th1">職種名</th>
+                    <th class="th_address th2">勤務地</th>
+                    <th class="th_created th3">作成日</th>
+                    <th class="th_view th4">閲覧数</th>
+                    <th class="th_status th5">掲載ステータス</th>
+                    <th class="th_edit th6">編集</th>
+                </tr>
+            <?php endif; ?>
+        <?php foreach ($jobs as $job) : ?>
                 <?php if ($job['company_id'] == $current_user['id']) : ?>
                     <div class="jobtitle">
                         <tr>
-                            <th><?= $job['type']?></th>
+                            <th><?= $job['id'].$job['type']?></th>
                             <th><?= $job['j_address_prefectures'] . $job['j_address_detail'] ?></th>
                             <th><?= $job['created_at'] ?></th>
                             <th><?= "300" ?></th>
