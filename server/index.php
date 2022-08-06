@@ -21,7 +21,14 @@ $companys_jobs = find_com_job_last3();
 //検索情報のPOSTデータ取得と画面遷移
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $j_address_prefectures = filter_input(INPUT_POST, 'j_address_prefectures');
-    header("Location: show_list.php?page=1&address=" . $j_address_prefectures);
+    $type = filter_input(INPUT_POST, 'type');
+    $employment = filter_input(INPUT_POST, 'employment');
+        if($j_address_prefectures == '都道府県を選択してください'){
+        $j_address_prefectures = '';}
+        if($employment == '雇用形態を選択してください'){
+        $employment = '';}
+        
+    header("Location: show_list.php?page=1" . add_url($j_address_prefectures) . type_url($type) . emp_url($employment));
     exit;
 }
 // if ($_SERVER['REQUEST_METHOD'] === 'POST') {

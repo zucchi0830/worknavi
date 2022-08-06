@@ -25,6 +25,7 @@ function h($str)
     return htmlspecialchars($str, ENT_QUOTES, 'UTF-8');
 }
 
+
 // 会社情報登録画面エラーメッセージ表示(バリデーション)
 function signup_validate($name, $address_prefectures, $address_detail, $full_name, $email, $password)
 {
@@ -782,25 +783,41 @@ function find_job_all_status_on_count()
     return $stmt->fetch(PDO::FETCH_ASSOC);
 }
 
-////////////////////////
-// 検索>公開中の求人件数//
-////////////////////////
-// 公開求人件数>検索結果に該当した件数(// 純粋なカウント数をここで作っておく)
-function find_job_count_true($address_keyword,$job_count,$job_count_address)
+///////////////////////
+// ここから求人検索機能//
+///////////////////////
+
+// 公開求人>都道府県の件数取得(status:trueのみ)
+function search_com_job_count($address_keyword,$type_keyword,$employment_keyword)
 {
-    if(empty($address_keyword)){ //都道府県がemptyなら公開中の求人件数が返ってくる
-    $job_count_true = $job_count;
-    }elseif(!empty($address_keyword)){ //都道府県が!emptyなら公開中>都道府県の求人件数が返ってくる
-    $job_count_true = $job_count_address;
-    }
-return $job_count_true;
+    $dbh = connect_db();
+
+    $sql = <<<EOM
+    SELECT COUNT(*)
+    FROM companys 
+    INNER JOIN jobs
+    ON companys.id = jobs.company_id
+    WHERE j_address_prefectures LIKE :j_address_prefectures
+    AND type LIKE :type
+    AND employment LIKE :employment
+    AND status = true
+    EOM;
+
+    $address_keyword_param = '%' . $address_keyword . '%';
+    $type_keyword_param = '%' . $type_keyword . '%';
+    $employment_keyword_param = '%' . $employment_keyword . '%';
+
+    $stmt = $dbh->prepare($sql);
+    $stmt->bindParam(':j_address_prefectures', $address_keyword_param, PDO::PARAM_STR);
+    $stmt->bindParam(':type', $type_keyword_param, PDO::PARAM_STR);
+    $stmt->bindParam(':employment', $employment_keyword_param, PDO::PARAM_STR);
+    $stmt->execute();
+
+    return $stmt->fetch(PDO::FETCH_ASSOC);
 }
 
-////////////////
-// ここから検索//
-////////////////
-// 求人検索機能
-function search_address_com_job($start,$address_keyword)
+// 公開求人>都道府県or職種or雇用形態の検索結果 10件取得(status:trueのみ)
+function search_com_job($start,$address_keyword,$type_keyword,$employment_keyword)
 {
     // データベースに接続
     $dbh = connect_db();
@@ -812,25 +829,82 @@ function search_address_com_job($start,$address_keyword)
     INNER JOIN jobs
     ON companys.id = jobs.company_id
     WHERE j_address_prefectures LIKE :j_address_prefectures
+    AND type LIKE :type
+    AND employment LIKE :employment
     AND status = true
 
     ORDER BY jobs.created_at DESC
-    LIMIT :start,10    
+    LIMIT :start,10
     EOM;
 
-    $keyword_param = '%' . $address_keyword . '%';
+    $address_keyword_param = '%' . $address_keyword . '%';
+    $type_keyword_param = '%' . $type_keyword . '%';
+    $employment_keyword_param = '%' . $employment_keyword . '%';
 
     $stmt = $dbh->prepare($sql);
-    $stmt->bindParam(':j_address_prefectures', $keyword_param, PDO::PARAM_STR);
+    $stmt->bindParam(':j_address_prefectures', $address_keyword_param, PDO::PARAM_STR);
+    $stmt->bindParam(':type', $type_keyword_param, PDO::PARAM_STR);
+    $stmt->bindParam(':employment', $employment_keyword_param, PDO::PARAM_STR);
     $stmt->bindParam(':start', $start, PDO::PARAM_INT);
     $stmt->execute();
 
-    $search_address_result = $stmt->fetchAll(PDO::FETCH_ASSOC);
-    return $search_address_result;
+    $search_result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    return $search_result;
 }
 
-// 公開求人の件数取得(status:trueのみ)
-function search_address_com_job_count($address_keyword)
+// 公開求人>都道府県の検索結果 10件取得(status:trueのみ)
+// function search_address_com_job($start,$address_keyword)
+// {
+//     // データベースに接続
+//     $dbh = connect_db();
+
+//     // SQL文の組み立て
+//     $sql = <<<EOM
+//     SELECT * 
+//     FROM companys 
+//     INNER JOIN jobs
+//     ON companys.id = jobs.company_id
+//     WHERE j_address_prefectures LIKE :j_address_prefectures
+//     AND status = true
+
+//     ORDER BY jobs.created_at DESC
+//     LIMIT :start,10
+//     EOM;
+
+//     $address_keyword_param = '%' . $address_keyword . '%';
+
+//     $stmt = $dbh->prepare($sql);
+//     $stmt->bindParam(':j_address_prefectures', $address_keyword_param, PDO::PARAM_STR);
+//     $stmt->bindParam(':start', $start, PDO::PARAM_INT);
+//     $stmt->execute();
+
+//     $search_address_result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+//     return $search_address_result;
+// }
+
+// 公開求人>都道府県の件数取得(status:trueのみ)
+// function search_address_com_job_count($address_keyword)
+// {
+//     $dbh = connect_db();
+
+//     $sql = <<<EOM
+//     SELECT COUNT(*)
+//     FROM jobs 
+//     WHERE j_address_prefectures LIKE :j_address_prefectures
+//     AND status = true
+//     EOM;
+
+//     $address_keyword_param = '%' . $address_keyword . '%';
+
+//     $stmt = $dbh->prepare($sql);
+//     $stmt->bindParam(':j_address_prefectures', $address_keyword_param, PDO::PARAM_STR);
+//     $stmt->execute();
+
+//     return $stmt->fetch(PDO::FETCH_ASSOC);
+// }
+
+// 公開求人>職種の件数取得(status:trueのみ)
+function search_type_com_job_count($type_keyword)
 {
     $dbh = connect_db();
 
@@ -841,14 +915,90 @@ function search_address_com_job_count($address_keyword)
     AND status = true
     EOM;
 
-    $keyword_param = '%' . $address_keyword . '%';
+    $type_keyword_param = '%' . $type_keyword . '%';
 
     $stmt = $dbh->prepare($sql);
-    $stmt->bindParam(':j_address_prefectures', $keyword_param, PDO::PARAM_STR);
+    $stmt->bindParam(':j_address_prefectures', $type_keyword_param, PDO::PARAM_STR);
     $stmt->execute();
 
     return $stmt->fetch(PDO::FETCH_ASSOC);
 }
 
+// 公開求人>雇用形態の件数取得(status:trueのみ)
+function search_employment_com_job_count($employment_keyword)
+{
+    $dbh = connect_db();
+
+    $sql = <<<EOM
+    SELECT COUNT(*)
+    FROM jobs 
+    WHERE j_address_prefectures LIKE :j_address_prefectures
+    AND status = true
+    EOM;
+
+    $employment_keyword_param = '%' . $employment_keyword . '%';
+
+    $stmt = $dbh->prepare($sql);
+    $stmt->bindParam(':j_address_prefectures', $employment_keyword_param, PDO::PARAM_STR);
+    $stmt->execute();
+
+    return $stmt->fetch(PDO::FETCH_ASSOC);
+}
+
+////////////////////////
+// 検索>公開中の求人件数//
+////////////////////////
+// 公開求人件数>検索結果に該当した件数(// 純粋なカウント数をここで作っておく)
+function find_job_count_true($job_count,$job_count_address,$address_keyword,$type_keyword,$employment_keyword)
+{
+    if(empty($address_keyword)){ //都道府県がemptyなら公開中の求人件数が返ってくる
+    $job_count_true = $job_count;
+    } elseif (!empty($address_keyword)){ //都道府県が!emptyなら公開中>都道府県の求人件数が返ってくる
+    $job_count_true = $job_count_address;
+    } elseif (!empty($type_keyword)){ //職種が!emptyなら公開中>職種の求人件数が返ってくる
+    $job_count_true = $job_count_address;
+    } elseif (!empty($employment_keyword)){ //雇用形態が!emptyなら公開中>雇用形態の求人件数が返ってくる
+    $job_count_true = $job_count_address;
+    }
+return $job_count_true;
+}
+
+// urlに[address=]の値があれば値を返す
+function add_url($address_keyword)
+{
+if (!empty($address_keyword)) {
+    return "&address=". h($address_keyword);
+}
+}
+
+// urlに[type=]の値があれば値を返す
+function type_url($type)
+{
+if (!empty($type)) {
+    return "&type=". h($type);
+}
+}
+
+// urlに[employment=]の値があれば値を返す
+function emp_url($employment)
+{
+if (!empty($employment)) {
+    return "&employment=". h($employment);
+}
+}
 
 
+function paging($page, $address_keyword,$find_job_count_true,$type_keyword,$employment_keyword)
+{
+$page = (int) htmlspecialchars($page);
+
+$prev = max($page - 1, 1); // 前のページ番号
+$next = $page + 1; // 次のページ番号
+
+if ($page > 1) { // 最初のページ以外で「前へ」を表示
+    print '<a href="?page=' . $prev . add_url($address_keyword) . type_url($type_keyword) . emp_url($employment_keyword) . '">&laquo; 前へ</a>';
+}
+if ($find_job_count_true - (intval($page)*10) > 0){ // 最後のページ以外で「次へ」を表示
+    print '<a href="?page=' . $next . add_url($address_keyword) . type_url($type_keyword) . emp_url($employment_keyword) .'">次へ &raquo;</a>';
+}
+}
