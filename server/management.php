@@ -53,7 +53,7 @@ $myjob = find_job_com($current_user['id']);
                         <tr>
                             <th><?= $job['id'].$job['type']?></th>
                             <th><?= $job['j_address_prefectures'] . $job['j_address_detail'] ?></th>
-                            <th><?= $job['created_at'] ?></th>
+                            <th><?= date('Y/m/d', strtotime($job['created_at'])) ?></th>
                             <th><?= "300" ?></th>
                             <th>
                             <?php if ($job['status'] == true) : ?>

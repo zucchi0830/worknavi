@@ -491,6 +491,7 @@ input[type="password"]::placeholder {
 /* confirm.php */
 .h1_confirm{
 text-align: center;
+margin:50px 0;
 }
 
 .confirm_back_button {
