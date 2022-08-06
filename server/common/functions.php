@@ -755,18 +755,18 @@ function find_com_job_last10($start)
     ON companys.id = jobs.company_id
     WHERE status = true
     ORDER BY jobs.created_at DESC
-    LIMIT ?,10
+    LIMIT :start,10
     EOM;
 
     $stmt = $dbh->prepare($sql);
-    $stmt->bindParam(1, $start, PDO::PARAM_INT);
+    $stmt->bindParam(':start', $start, PDO::PARAM_INT);
     $stmt->execute();
 
     return $stmt->fetchAll(PDO::FETCH_ASSOC);
 }
 
-// 求人情報と会社情報を全て取得(status:trueのみ)
-function find_job_all_status_true()
+// 公開求人の件数取得(status:trueのみ)
+function find_job_all_status_on_count()
 {
     $dbh = connect_db();
 
@@ -782,6 +782,23 @@ function find_job_all_status_true()
     return $stmt->fetch(PDO::FETCH_ASSOC);
 }
 
+////////////////////////
+// 検索>公開中の求人件数//
+////////////////////////
+// 公開求人件数>検索結果に該当した件数(// 純粋なカウント数をここで作っておく)
+function find_job_count_true($address_keyword,$job_count,$job_count_address)
+{
+    if(empty($address_keyword)){ //都道府県がemptyなら公開中の求人件数が返ってくる
+    $job_count_true = $job_count;
+    }elseif(!empty($address_keyword)){ //都道府県が!emptyなら公開中>都道府県の求人件数が返ってくる
+    $job_count_true = $job_count_address;
+    }
+return $job_count_true;
+}
+
+////////////////
+// ここから検索//
+////////////////
 // 求人検索機能
 function search_address_com_job($start,$address_keyword)
 {
@@ -795,17 +812,43 @@ function search_address_com_job($start,$address_keyword)
     INNER JOIN jobs
     ON companys.id = jobs.company_id
     WHERE j_address_prefectures LIKE :j_address_prefectures
+    AND status = true
+
     ORDER BY jobs.created_at DESC
-    LIMIT ?,10    
+    LIMIT :start,10    
     EOM;
 
     $keyword_param = '%' . $address_keyword . '%';
 
     $stmt = $dbh->prepare($sql);
     $stmt->bindParam(':j_address_prefectures', $keyword_param, PDO::PARAM_STR);
-    $stmt->bindParam(1, $start, PDO::PARAM_INT);
+    $stmt->bindParam(':start', $start, PDO::PARAM_INT);
     $stmt->execute();
 
     $search_address_result = $stmt->fetchAll(PDO::FETCH_ASSOC);
     return $search_address_result;
 }
+
+// 公開求人の件数取得(status:trueのみ)
+function search_address_com_job_count($address_keyword)
+{
+    $dbh = connect_db();
+
+    $sql = <<<EOM
+    SELECT COUNT(*)
+    FROM jobs 
+    WHERE j_address_prefectures LIKE :j_address_prefectures
+    AND status = true
+    EOM;
+
+    $keyword_param = '%' . $address_keyword . '%';
+
+    $stmt = $dbh->prepare($sql);
+    $stmt->bindParam(':j_address_prefectures', $keyword_param, PDO::PARAM_STR);
+    $stmt->execute();
+
+    return $stmt->fetch(PDO::FETCH_ASSOC);
+}
+
+
+
