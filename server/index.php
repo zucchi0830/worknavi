@@ -9,10 +9,35 @@ $dbh = connect_db();
 
 // 変数の初期化
 $name = '';
+$j_address_prefectures ='';
+$type = '';
+$employment = '';
+
 $sel_address_prefectures = ['都道府県を選択してください', '青森県', '秋田県', '岩手県', '山形県', '宮城県', '福島県'];
 $sel_employment = ['雇用形態を選択してください', '正社員', '契約社員', 'パートアルバイト', 'その他'];
 
 $companys_jobs = find_com_job_last3();
+
+//検索情報のPOSTデータ取得と画面遷移
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $j_address_prefectures = filter_input(INPUT_POST, 'j_address_prefectures');
+    header("Location: show_list.php?page=1&address=" . $j_address_prefectures);
+    exit;
+}
+// if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+//     $type = filter_input(INPUT_POST, 'type');
+//     header("Location: show_list.php?address=" . $j_address_prefectures);
+//     exit;
+// }
+// if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+//     $employment = filter_input(INPUT_POST, 'employment');
+//     header("Location: show_list.php?address=" . $j_address_prefectures);
+//     exit;
+// }
+
+
+var_dump($type);
+var_dump($employment);
 ?>
 
 <!DOCTYPE html>
@@ -26,26 +51,26 @@ $companys_jobs = find_com_job_last3();
         <h1 class="signup_title">求人検索はこちら</h1>
 
         <form class="signup_form" action="" method="post">
-            <label class="address_prefectures_label signup_label" for="name">都道府県</label>
-            <select name="address_prefectures" id="address_prefectures">
-                <?php foreach ($sel_address_prefectures as $value) : ?>
-                    <?php if ($value === $address_prefectures) : ?>
+            <label class="j_address_prefectures_label signup_label" for="j_address_prefectures">都道府県</label>
+            <select name="j_address_prefectures" id="j_address_prefectures">
+                <?php foreach ($sel_address_prefectures as $j_address_prefectures_value) : ?>
+                    <?php if ($j_address_prefectures_value === $j_address_prefectures) : ?>
                         <!-- ① POST データが存在する場合はこちらの分岐に入る -->
-                        <?= "<option value='$value' selected>" . $value . "</option>"; ?>
+                        <?= "<option value='$j_address_prefectures_value' selected>" . $j_address_prefectures_value . "</option>" ?>
                     <?php else : ?>
                         <!--  ② POST データが存在しない場合はこちらの分岐に入る -->
-                        <?= "<option value='$value'>" . $value . "</option>"; ?>
+                        <?= "<option value='$j_address_prefectures_value'>" . $j_address_prefectures_value . "</option>" ?>
                     <?php endif; ?>
                 <?php endforeach; ?>
             </select>
 
-            <label class="name_label signup_label" for="name">職種</label>
-            <input type="text" name="name" id="name" placeholder="職種名を入力してください" value="<?= h($name) ?>">
+            <label class="type_label signup_label" for="type">職種</label>
+            <input type="text" name="type" id="type" placeholder="職種名を入力してください" value="<?= h($name) ?>">
 
-            <label class="address_prefectures_label signup_label" for="name">雇用形態</label>
-            <select name="address_prefectures" id="address_prefectures">
+            <label class="employment_label signup_label" for="employment">雇用形態</label>
+            <select name="employment" id="employment">
                 <?php foreach ($sel_employment as $employment_value) : ?>
-                    <?php if ($employment_value === $sel_employment) : ?>
+                    <?php if ($employment_value === $employment) : ?>
                         <!--  ① POST データが存在する場合はこちらの分岐に入る -->
                         <?= "<option value='$employment_value' selected>" . $employment_value . "</option>"; ?>
                     <?php else : ?>

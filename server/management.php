@@ -41,7 +41,7 @@ $jobs = find_com_job_all();
                 <?php if ($job['company_id'] == $current_user['id']) : ?>
                     <div class="jobtitle">
                         <tr>
-                            <th><?= $job['type'] . $job['name'] ?></th>
+                            <th><?= $job['type']?></th>
                             <th><?= $job['j_address_prefectures'] . $job['j_address_detail'] ?></th>
                             <th><?= $job['created_at'] ?></th>
                             <th><?= "300" ?></th>

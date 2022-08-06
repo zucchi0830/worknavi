@@ -783,27 +783,29 @@ function find_job_all_status_true()
 }
 
 // 求人検索機能
-function search_com_job($keyword)
+function search_address_com_job($start,$address_keyword)
 {
     // データベースに接続
     $dbh = connect_db();
 
     // SQL文の組み立て
-    $sql = 'SELECT * FROM jobs WHERE description LIKE :kuzu';
-    $keyword_param = '%' . $keyword . '%';
+    $sql = <<<EOM
+    SELECT * 
+    FROM companys 
+    INNER JOIN jobs
+    ON companys.id = jobs.company_id
+    WHERE j_address_prefectures LIKE :j_address_prefectures
+    ORDER BY jobs.created_at DESC
+    LIMIT ?,10    
+    EOM;
 
-    // プリペアドステートメントの準備
-    // $dbh->query($sql) でも良い
+    $keyword_param = '%' . $address_keyword . '%';
+
     $stmt = $dbh->prepare($sql);
-
-    // パラメータのバインド
-    $stmt->bindValue(':kuzu', $keyword_param, PDO::PARAM_STR);
-
-    // プリペアドステートメントの実行
+    $stmt->bindParam(':j_address_prefectures', $keyword_param, PDO::PARAM_STR);
+    $stmt->bindParam(1, $start, PDO::PARAM_INT);
     $stmt->execute();
 
-    // 結果の受け取り
-    $search_result = $stmt->fetchAll(PDO::FETCH_ASSOC);
-    // return $keyword_param;
-    return $search_result;
+    $search_address_result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    return $search_address_result;
 }
