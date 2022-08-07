@@ -31,7 +31,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     header("Location: show_list.php?page=1" . add_url($j_address_prefectures) . type_url($type) . emp_url($employment));
     exit;
 }
-
 ?>
 
 <!DOCTYPE html>
@@ -85,9 +84,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <?php foreach ($companys_jobs as $job) : ?>
                 <div class="jobtitle">
 
-                    <h1 class="index_job_title">会社名:<?= $job['name'] ?></h1>
+                <h1 class="index_job_title">会社名:<?= $job['name'] ?></h1>
+                <h3 class=""><?= $job['job_title'] ?></h3>
                     <ul>
-                        <li></li>
+                    <?php if (!empty($job['image1'])) : ?>
+                    <div class="show_list_content">
+                        <li>
+                            <div class="grid_item">
+                        <a class="detail_button" href="show.php?job_id=<?= h($job['id']) ?>">
+                            <img src="images/<?= h($job['image1']) ?>">
+                        </a>
+                    <?php endif; ?>
+                    </div>
+                    </li>
                         <li>職種:<?= $job['type'] ?></li>
                         <li>勤務地:<?= $job['j_address_prefectures'] ?></li>
                         <li>雇用形態:<?= $job['employment'] ?></li>

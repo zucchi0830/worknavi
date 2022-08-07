@@ -4,6 +4,8 @@ define('DSN', 'mysql:host=db;dbname=worknavi;charset=utf8');
 define('USER', 'master_user');
 define('PASSWORD', 'Panda1bias');
 
+define('EXTENTION', ['jpg', 'jpeg', 'png', 'gif', 'webp']);
+
 define('MSG_NAME_REQUIRED', '会社名を入力してください');
 define('MSG_ADDRESS_PREFECTURES_REQUIRED', '都道府県を選択してください');
 define('MSG_ADDRESS_DETAIL_REQUIRED', '市区町村番地 建物名を入力してください');
@@ -44,3 +46,7 @@ define('MSG_DESCRIPTION_REQUIRED', '仕事内容を入力してください');
 define('MSG_E_TEL_TIME_REQUIRED', '電話可能時間を入力してください'); 
 define('MSG_E_NAME_REQUIRED', '採用担当者名を入力してください');
 
+define('MSG_NO_JOB_TITLE', '求人タイトルを入力してください');
+define('MSG_NO_DESCRIPTION', '詳細を入力してください');
+define('MSG_NO_IMAGE', '画像を選択してください');
+define('MSG_NOT_ABLE_EXT', '選択したファイルの拡張子が有効ではありません');

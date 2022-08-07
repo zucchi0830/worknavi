@@ -53,6 +53,14 @@ $find_job_count_true = find_job_count_true($job_count['COUNT(*)'],$job_search_co
             <div class="jobtitle">
             <h1 class="index_job_title">会社名:<?=  $job['name'] ?></h1>
                 <ul>
+                    <?php if (!empty($job['image1'])) : ?>
+                    <div class="show_list_content">
+                        <li>
+                            <div class="grid_item">
+                        <a class="detail_button" href="show.php?job_id=<?= h($job['id']) ?>">
+                            <img src="images/<?= h($job['image1']) ?>">
+                        </a>
+                    <?php endif; ?>                
                     <li></li>
                     <li>職種:<?=  $job['type'] ?></li>
                     <li>勤務地:<?=  $job['j_address_prefectures']?></li>

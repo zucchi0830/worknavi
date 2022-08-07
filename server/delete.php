@@ -19,7 +19,7 @@ $job_id = filter_input(INPUT_GET, 'job_id');
 $job = find_com_job($job_id);
 
 delete_job($job_id);
-header('Location: index.php');
+header('Location: management.php');
 exit;
 
 ?>

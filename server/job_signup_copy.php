@@ -56,6 +56,11 @@ $errors = [];
 
 $job_id = 0;
 $job = '';
+$upload_file =
+$upload_tmp_file =
+$image1 =
+$img_description1 = '';
+$job_title = '';
 
 // セッションにidが保持されていなければ一覧画面にリダイレクト
 // パラメータを受け取れなければ一覧画面にリダイレクト
@@ -119,23 +124,41 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $e_email = filter_input(INPUT_POST, 'e_email');
     $e_name = filter_input(INPUT_POST, 'e_name');
     $e_others = filter_input(INPUT_POST, 'e_others');
+    // 画像投稿分 // 画像の説明文
+    $job_title = filter_input(INPUT_POST, 'job_title');
+    // アップロードした画像のファイル名
+    $upload_file = $_FILES['image1']['name'];
+    // サーバー上で一時的に保存されるテンポラリファイル名
+    $upload_tmp_file = $_FILES['image1']['tmp_name'];    
 
     $errors = job_signup_validate(
-    $type,$j_address_prefectures,$j_address_detail,$employment,$smoke,$commute,$transfer,$academic, $salary,
+    $job_title, $type,$j_address_prefectures,$j_address_detail,$employment,$smoke,$commute,$transfer,$academic, $salary,
     $allowance, $allowance_limit, $insurance1, $insurance2, $insurance3, $insurance4, $childcare_leave,$work_hours,$break_time,$holiday,$holiday_detail,
     $retirement,$retirement_remarks,$rehire,$trial_period,$trial_period_span,
     $trial_period_conditions,$trial_period_conditions_detail,$description,
-    $e_tel,$e_tel_time,$e_email,$e_name);
+    $e_tel,$e_tel_time,$e_email,$e_name, $upload_file);
+    
+    if (empty($errors)) {
+    $image_name = date('YmdHis') . '_' . $upload_file;
+    $path = 'images/' . $image_name;
+
+    if (move_uploaded_file($upload_tmp_file, $path)) {
+
+    } 
+    }
 
 // エラーがなければ登録→管理画面へ遷移
 if (empty($errors)) {
+    $image_name = date('YmdHis') . '_' . $upload_file;
+    $path = 'images/' . $image_name;
+    
     insert_job($current_user['id'],$status,$type,$j_address_prefectures,$j_address_detail,$employment,$station,$smoke,$commute,$transfer,
     $academic,$experience,$qualification,$salary,$allowance,$allowance_limit, $insurance1, $insurance2, $insurance3, $insurance4, 
     $childcare_leave,$work_hours,$break_time,$holiday,$holiday_detail,
     $retirement,$retirement_remarks,$rehire,$trial_period,$trial_period_span,
     $trial_period_conditions,$trial_period_conditions_detail,$description,
-    $e_tel,$e_tel_time,$e_email,$e_name,$e_others);
-    header('Location: management.php');
+    $e_tel,$e_tel_time,$e_email,$e_name,$e_others, $image_name,$job_title);
+    header('Location: job_signup_confirm.php');
     exit;
     }
 }
@@ -162,6 +185,10 @@ if (empty($errors)) {
             </ul>
         <?php endif; ?>
         <!-- ここから求人更新フォーム -->
+        <form class="signup_form" action="" method="post"  enctype="multipart/form-data">
+            <label class="job_title_label signup_label" for="job_title">求人タイトル<span class="asterisk">*</span></label>
+            <input type="text" name="job_title" id="job_title" placeholder="求人タイトルを入力してください。" value="<?= h($job['job_title']) ?>">        
+
         <form class="signup_form" action="" method="post">
             <label class="type_label signup_label" for="type">募集する職種<span class="asterisk">*</span></label>
             <input type="text" name="type" id="type" placeholder="職種名(1つまで)" value="<?= h($job['type']) ?>">
@@ -386,6 +413,12 @@ if (empty($errors)) {
             <label class="e_others_label signup_label" for="e_others">その他応募方法</label>
             <textarea class="e_others" name="e_others" rows="5" maxlength="500" placeholder="その他応募方法がある場合はこちらにご入力ください"><?= h($job['e_others']) ?></textarea>
 
+            <label class="upload_content_label" id="preview" for="file_upload">
+                <span id="plus_icon" class="plus_icon"><i class="fas fa-plus-circle"></i></span>
+                <span id="upload_text" class="upload_text">会社の就業風景・写真・ロゴなどを添付してください</span>
+            </label>
+            <input class="input_file" type="file" id="file_upload" name="image1" onchange="imgPreView(event)">
+
             <div class="button_area">
 
                 <input type="submit" value="求人情報を掲載する" class="signup_button">
@@ -394,6 +427,7 @@ if (empty($errors)) {
     </section>
     <!-- フッター読み込み -->
     <?php include_once __DIR__ . '/_footer.php' ?>
+    <script src="js/upload.js"></script>
 </body>
 
 </html>

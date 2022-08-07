@@ -105,7 +105,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <input type="email" name="email" id="email" placeholder="Email" value="<?= h($email) ?>">
 
             <label class="description_label signup_label" for="description">お問い合わせ内容</label>
-            <textarea class="description" name="description" rows="5" maxlength="1000" placeholder="お問い合わせ内容を入力してください"><?= h($description) ?></textarea>
+            <textarea class="description" name="description" rows="5" maxlength="1500" placeholder="お問い合わせ内容を入力してください"><?= h($description) ?></textarea>
             
             <div class="button_area">
                 <input type="submit" value="上記内容で問い合わせる" class="contact_button">

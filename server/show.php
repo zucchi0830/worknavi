@@ -33,11 +33,23 @@ if ($job['status'] == false && $current_user['id'] != $job['company_id'] ) {
     <?php include_once __DIR__ . '/_header.php' ?>
 
     <section class="management_content wrapper">
-        <h1 class="signup_title"><?= h($job['name']) , "  " . h($job['type']) ?>の求人情報です</h1>
+    <?php if (!empty($job['image1']) ) : ?>
+        <h1 class="signup_title"><?= h($job['job_title']) ?></h1>
+    <?php elseif (empty($job['image1']) ) : ?>    
+        <h1 class="signup_title"><?= h($job['name']) . "の求人です" ?></h1>
+    <?php endif; ?>
+        <section class="main_content">
+            <div class="content">
+                <?php if (!empty($job['image1']) ) : ?>
+                    <img src="images/<?= h($job['image1']) ?>">
+                <?php endif; ?>    
+            </div>        
+        </section>
+        
         <table class="management_table">
             <tr>
-                <th>職種</th>
-                <th><?= h($job['type']) ?></th>
+                <th class="th_show1">職種</th>
+                <th class="th_show2"><?= h($job['type']) ?></th>
             </tr>
             <tr>
                 <th>勤務地 都道府県</th>
@@ -152,8 +164,8 @@ if ($job['status'] == false && $current_user['id'] != $job['company_id'] ) {
         <h1 class="signup_title">応募はこちらから</h1>
         <table class="management_table">
             <tr>
-                <th>応募先電話番号</th>
-                <th><?= h($job['e_tel']) ?></th>
+                <th class="th_show1">応募先電話番号</th>
+                <th class="th_show2"><?= h($job['e_tel']) ?></th>
             </tr>
             <tr>
                 <th>電話可能時間</th>
@@ -176,6 +188,7 @@ if ($job['status'] == false && $current_user['id'] != $job['company_id'] ) {
                 <th><?= h($job['e_others']) ?></th>
             </tr>
         </table>
+        
         <div class="button_area">
             <a href="index.php" class="search_button" class="nav-link">ここにアフィリエイト ここにアフィリエイト</a>
         </div>
@@ -198,9 +211,8 @@ if ($job['status'] == false && $current_user['id'] != $job['company_id'] ) {
 
             <div class="content">
             <?php if (!empty($current_user) && $current_user['id'] == $job['company_id']) : ?>
-                <h1>管理者情報</h1>
+                <h1 class="signup_title">管理者情報</h1>
                 <div class="button">
-                    <a href="edit.php" class="edit_button">
                         <a href="edit.php?job_id=<?= h($job['id']) ?>" class="edit_button">編集</a>
                         <button class="delete_button" onclick="if (!confirm('本当に削除してよろしいですか？')) {return false}; 
                         location.href='delete.php?job_id=<?= h($job['id']) ?>'">削除</button>

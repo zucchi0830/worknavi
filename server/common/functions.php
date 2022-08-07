@@ -268,7 +268,7 @@ function insert_job(
     $e_tel_time,
     $e_email,
     $e_name,
-    $e_others
+    $e_others, $upload_file, $job_title
 ) 
 {
 $dbh = connect_db();
@@ -281,14 +281,14 @@ $dbh = connect_db();
         childcare_leave, work_hours, break_time, holiday, holiday_detail,
         retirement, retirement_remarks, rehire, trial_period, trial_period_span,
         trial_period_conditions, trial_period_conditions_detail, description,
-        e_tel, e_tel_time, e_email, e_name, e_others)
+        e_tel, e_tel_time, e_email, e_name, e_others,image1, job_title)
     VALUES
         (:company_id, :status, :type, :j_address_prefectures, :j_address_detail, :employment, :station, :smoke, :commute, :transfer,
         :academic, :experience, :qualification, :salary, :allowance, :allowance_limit, :insurance1, :insurance2, :insurance3, :insurance4,
         :childcare_leave, :work_hours, :break_time, :holiday, :holiday_detail,
         :retirement, :retirement_remarks, :rehire, :trial_period, :trial_period_span,
         :trial_period_conditions, :trial_period_conditions_detail, :description,
-        :e_tel, :e_tel_time, :e_email, :e_name, :e_others)
+        :e_tel, :e_tel_time, :e_email, :e_name, :e_others,:image1, :job_title)
     EOM;
 
     $stmt = $dbh->prepare($sql);
@@ -330,12 +330,15 @@ $dbh = connect_db();
     $stmt->bindValue(':e_email', $e_email, PDO::PARAM_STR);
     $stmt->bindValue(':e_name', $e_name, PDO::PARAM_STR);
     $stmt->bindValue(':e_others', $e_others, PDO::PARAM_STR);
+    $stmt->bindValue(':image1', $upload_file, PDO::PARAM_STR);
+    $stmt->bindValue(':job_title', $job_title, PDO::PARAM_STR);
 
     $stmt->execute();
 }
 
 // 求人掲載用のエラーメッセージ表示(バリデーション)
 function job_signup_validate(
+    $job_title,
     $type,
     $j_address_prefectures,
     $j_address_detail,
@@ -367,9 +370,13 @@ function job_signup_validate(
     $e_tel,
     $e_tel_time,
     $e_email,
-    $e_name
+    $e_name, $upload_file
 ) {
     $errors = [];
+
+    if (empty($job_title)) { //求人タイトル
+        $errors[] = MSG_NO_JOB_TITLE;
+    }
 
     if (empty($type)) {  //職種
         $errors[] = MSG_TYPE_REQUIRED;
@@ -487,7 +494,43 @@ function job_signup_validate(
         $errors[] = MSG_E_NAME_REQUIRED;
     }
 
+    // if (empty($upload_file)) { //画像添付
+    //     $errors[] = MSG_NO_IMAGE;    
+    //     } elseif (check_file_ext($upload_file)) {
+    //     $errors[] = MSG_NOT_ABLE_EXT;
+    // }
+
+    if (!empty($upload_file) &&
+    check_file_ext($upload_file)) {  //画像が変更されていた場合は、拡張子チェック
+    $errors[] = MSG_NOT_ABLE_EXT;
+    }
     return $errors;
+}
+
+//画像投稿バリデーション
+// function job_update_image_validate($upload_file)
+// {
+//     $errors = [];
+
+//     if (!empty($upload_file) &&
+//         check_file_ext($upload_file)) {
+//         $errors[] = MSG_NOT_ABLE_EXT;
+//     }
+
+//     return $errors;
+// }
+
+//画像投稿
+function check_file_ext($upload_file)
+{
+    $err = false;
+
+    $file_ext = pathinfo($upload_file, PATHINFO_EXTENSION);
+    if (!in_array($file_ext, EXTENTION)) {
+        $err = true;
+    }
+
+    return $err;
 }
 
 //求人の一括編集・更新機能
@@ -528,7 +571,9 @@ function update_job_all(
     $e_tel_time,
     $e_email,
     $e_name,
-    $e_others
+    $e_others, 
+    $image_name, 
+    $job_title
 ) 
 {
 $dbh = connect_db();
@@ -573,8 +618,12 @@ $dbh = connect_db();
     e_tel_time = :e_tel_time,
     e_email = :e_email,
     e_name = :e_name,
-    e_others = :e_others
-        
+    e_others = :e_others,
+    e_others = :e_others,
+    e_others = :e_others,
+    image1 = :image1,
+    job_title =:job_title
+
     WHERE
         id = :id
     EOM;
@@ -617,6 +666,145 @@ $dbh = connect_db();
     $stmt->bindValue(':e_email', $e_email, PDO::PARAM_STR);
     $stmt->bindValue(':e_name', $e_name, PDO::PARAM_STR);
     $stmt->bindValue(':e_others', $e_others, PDO::PARAM_STR);
+    $stmt->bindValue(':image1', $image_name, PDO::PARAM_STR);
+    $stmt->bindValue(':job_title', $job_title, PDO::PARAM_STR);
+    $stmt->bindValue(':id', $job_id, PDO::PARAM_STR);
+
+    $stmt->execute();
+}
+
+//求人の一括編集・更新機能(画像変更なしの場合)
+function update_job_all_nochange_image(
+    $job_id,
+    $type,
+    $j_address_prefectures,
+    $j_address_detail,
+    $employment,
+    $station,
+    $smoke,
+    $commute,
+    $transfer,
+    $academic,
+    $experience,
+    $qualification,
+    $salary,
+    $allowance,
+    $allowance_limit,
+    $insurance1,
+    $insurance2,
+    $insurance3,
+    $insurance4,
+    $childcare_leave,
+    $work_hours,
+    $break_time,
+    $holiday,
+    $holiday_detail,
+    $retirement,
+    $retirement_remarks,
+    $rehire,
+    $trial_period,
+    $trial_period_span,
+    $trial_period_conditions,
+    $trial_period_conditions_detail,
+    $description,
+    $e_tel,
+    $e_tel_time,
+    $e_email,
+    $e_name,
+    $e_others, 
+    $job_title
+) 
+{
+$dbh = connect_db();
+
+    $sql = <<<EOM
+    UPDATE
+    jobs
+
+    SET
+    type = :type,
+    j_address_prefectures = :j_address_prefectures,
+    j_address_detail = :j_address_detail,
+    employment = :employment,
+    station = :station,
+    smoke = :smoke,
+    commute = :commute,
+    transfer = :transfer,
+    academic = :academic,
+    experience = :experience,
+    qualification = :qualification,
+    salary = :salary,
+    allowance = :allowance,
+    allowance_limit = :allowance_limit,
+    insurance1 = :insurance1,
+    insurance2 = :insurance2,
+    insurance3 = :insurance3,
+    insurance4 = :insurance4,
+    childcare_leave = :childcare_leave,
+    work_hours = :work_hours,
+    break_time = :break_time,
+    holiday = :holiday,
+    holiday_detail = :holiday_detail,
+    retirement = :retirement,
+    retirement_remarks = :retirement_remarks,
+    rehire = :rehire,
+    trial_period = :trial_period,
+    trial_period_span = :trial_period_span,
+    trial_period_conditions = :trial_period_conditions,
+    trial_period_conditions_detail = :trial_period_conditions_detail,
+    description = :description,
+    e_tel = :e_tel,
+    e_tel_time = :e_tel_time,
+    e_email = :e_email,
+    e_name = :e_name,
+    e_others = :e_others,
+    e_others = :e_others,
+    e_others = :e_others,
+    job_title =:job_title
+
+    WHERE
+        id = :id
+    EOM;
+
+    $stmt = $dbh->prepare($sql);
+    // $stmt->bindValue(':status', $status, PDO::PARAM_STR);
+    $stmt->bindValue(':type', $type, PDO::PARAM_STR);
+    $stmt->bindValue(':j_address_prefectures', $j_address_prefectures, PDO::PARAM_STR);
+    $stmt->bindValue(':j_address_detail', $j_address_detail, PDO::PARAM_STR);
+    $stmt->bindValue(':employment', $employment, PDO::PARAM_STR);
+    $stmt->bindValue(':station', $station, PDO::PARAM_STR);
+    $stmt->bindValue(':smoke', $smoke, PDO::PARAM_STR);
+    $stmt->bindValue(':commute', $commute, PDO::PARAM_STR);
+    $stmt->bindValue(':transfer', $transfer, PDO::PARAM_STR);
+    $stmt->bindValue(':academic', $academic, PDO::PARAM_STR);
+    $stmt->bindValue(':experience', $experience, PDO::PARAM_STR);
+    $stmt->bindValue(':qualification', $qualification, PDO::PARAM_STR);
+    $stmt->bindValue(':salary', $salary, PDO::PARAM_STR);
+    $stmt->bindValue(':allowance', $allowance, PDO::PARAM_STR);
+    $stmt->bindValue(':allowance_limit', $allowance_limit, PDO::PARAM_STR);
+    $stmt->bindValue(':insurance1', $insurance1, PDO::PARAM_STR);
+    $stmt->bindValue(':insurance2', $insurance2, PDO::PARAM_STR);
+    $stmt->bindValue(':insurance3', $insurance3, PDO::PARAM_STR);
+    $stmt->bindValue(':insurance4', $insurance4, PDO::PARAM_STR);
+    $stmt->bindValue(':childcare_leave', $childcare_leave, PDO::PARAM_STR);
+    $stmt->bindValue(':work_hours', $work_hours, PDO::PARAM_STR);
+    $stmt->bindValue(':break_time', $break_time, PDO::PARAM_STR);
+    $stmt->bindValue(':holiday', $holiday, PDO::PARAM_STR);
+    $stmt->bindValue(':holiday_detail', $holiday_detail, PDO::PARAM_STR);
+    $stmt->bindValue(':retirement', $retirement, PDO::PARAM_STR);
+    $stmt->bindValue(':retirement_remarks', $retirement_remarks, PDO::PARAM_STR);
+    $stmt->bindValue(':rehire', $rehire, PDO::PARAM_STR);
+    $stmt->bindValue(':trial_period', $trial_period, PDO::PARAM_STR);
+    $stmt->bindValue(':trial_period_span', $trial_period_span, PDO::PARAM_STR);
+    $stmt->bindValue(':trial_period_conditions', $trial_period_conditions, PDO::PARAM_STR);
+    $stmt->bindValue(':trial_period_conditions_detail', $trial_period_conditions_detail, PDO::PARAM_STR);
+    $stmt->bindValue(':description', $description, PDO::PARAM_STR);
+    $stmt->bindValue(':e_tel', $e_tel, PDO::PARAM_STR);
+    $stmt->bindValue(':e_tel_time', $e_tel_time, PDO::PARAM_STR);
+    $stmt->bindValue(':e_email', $e_email, PDO::PARAM_STR);
+    $stmt->bindValue(':e_name', $e_name, PDO::PARAM_STR);
+    $stmt->bindValue(':e_others', $e_others, PDO::PARAM_STR);
+    $stmt->bindValue(':job_title', $job_title, PDO::PARAM_STR);
     $stmt->bindValue(':id', $job_id, PDO::PARAM_STR);
 
     $stmt->execute();
